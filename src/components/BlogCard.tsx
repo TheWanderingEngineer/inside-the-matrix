@@ -13,11 +13,11 @@ const BlogCard = ({ post, onTagClick }: BlogCardProps) => {
     <Card className="overflow-hidden blog-card border-border hover:border-primary/50 transition-all duration-300">
       <Link to={`/post/${post.id}`}>
         <div className="aspect-video overflow-hidden bg-muted">
-          <img
-            src={post.image}
-            alt={post.title}
-            className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-          />
+        <img
+          src={`${import.meta.env.BASE_URL}${post.image}`}
+          alt={post.title}
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+        />
         </div>
       </Link>
       

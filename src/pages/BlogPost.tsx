@@ -6,6 +6,8 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
+const withBase = (p?: string) =>
+  p ? `${import.meta.env.BASE_URL}${p.replace(/^\//, "")}` : ""; // CHANGED
 const BlogPost = () => {
   const { id } = useParams();
   const post = posts.find((p) => p.id === id);
@@ -31,7 +33,7 @@ const BlogPost = () => {
       {/* Hero Image */}
       <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
         <img
-          src={post.image}
+          src={withBase(post.image)}
           alt={post.title}
           className="w-full h-full object-cover"
         />
