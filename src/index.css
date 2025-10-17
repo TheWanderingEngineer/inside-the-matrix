@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Inside The Matrix - AI/ML Blog Design System */
+
+@layer base {
+  :root {
+    /* Light mode - Clean and professional */
+    --background: 0 0% 99%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 186 100% 47%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 142 76% 36%;
+
+    --radius: 0.75rem;
+
+    /* Matrix theme colors */
+    --matrix-green: 142 100% 50%;
+    --matrix-cyan: 186 100% 47%;
+    --matrix-glow: 142 100% 50%;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 20px rgba(0, 255, 65, 0.3);
+  }
+
+  .dark {
+    /* Dark mode - Matrix inspired */
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 142 100% 50%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 186 100% 47%;
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 142 100% 50%;
+
+    /* Enhanced Matrix glow in dark mode */
+    --shadow-glow: 0 0 30px rgba(0, 255, 65, 0.5);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  code, pre {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Blog card hover effect */
+  .blog-card {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-lg;
+  }
+
+  .blog-card:hover {
+    box-shadow: 0 10px 40px -10px hsl(var(--primary) / 0.3);
+  }
+
+  /* Matrix glow effect */
+  .matrix-glow {
+    text-shadow: 0 0 10px hsl(var(--matrix-glow) / 0.5);
+  }
+
+  /* Tag styles */
+  .tag {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+           bg-primary/10 text-primary border border-primary/20 
+           transition-all duration-200 hover:bg-primary/20 cursor-pointer;
+  }
+
+  /* Search input glow */
+  .search-input:focus {
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+  }
+
+  /* Smooth link underline */
+  .link-underline {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] 
+           after:w-full after:origin-bottom-right after:scale-x-0 
+           after:bg-primary after:transition-transform after:duration-300 
+           hover:after:origin-bottom-left hover:after:scale-x-100;
+  }
+}
