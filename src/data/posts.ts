@@ -144,7 +144,7 @@ The Transformer architecture continues to evolve with:
 The future of AI is being written in the language of attention.
     `,
     tags: ["NLP", "Transformers", "GPT", "BERT"],
-    image: "/images/transformers.jpg",
+    image: "images/transformers.jpg",
     date: "2024-01-20",
     readTime: "10 min read"
   },
@@ -255,7 +255,7 @@ Successful ML deployment requires attention to:
 Remember: A model is only valuable when it's successfully deployed and serving predictions.
     `,
     tags: ["MLOps", "Deployment", "Production", "DevOps"],
-    image: "/images/deployment.jpg",
+    image: "images/deployment.jpg",
     date: "2024-01-25",
     readTime: "12 min read"
   },
@@ -272,11 +272,11 @@ Welcome to the Matrix...
 
 Here's an image inside the article:
 
-![Neo entering the Matrix](/images/matrix-neo.jpg)
+![Neo entering the Matrix](images/matrix-neo.jpg)
 
 Or using HTML for size control:
 
-<img src="/images/matrix-neo.jpg" alt="Neo entering" width="500"/>
+<img src="images/matrix-neo.jpg" alt="Neo entering" width="500"/>
 
 More text here...
 
@@ -287,7 +287,7 @@ print("Wake up, Neo.")
 \`\`\`
   `,
   tags: ["AI", "Matrix", "Philosophy"],
-  image: "/images/matrix-cover.jpg",
+  image: "images/matrix-cover.jpg",
   date: "2025-10-17",
   readTime: "6 min read"
 }
