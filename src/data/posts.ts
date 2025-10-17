@@ -77,7 +77,7 @@ Neural networks power:
 Neural networks represent a paradigm shift in how we approach problem-solving with computers. Their ability to learn from data makes them invaluable for complex tasks.
     `,
     tags: ["Deep Learning", "Neural Networks", "AI"],
-    image: "/images/neural-network.jpg",
+    image: "images/neural-network.jpg",
     date: "2024-01-15",
     readTime: "8 min read"
   },
