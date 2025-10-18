@@ -23,7 +23,7 @@ export const posts: BlogPost[] = [
 Neural networks are the backbone of modern artificial intelligence. In this article, we'll explore how these powerful computational models work and why they're so effective.
 
 ## What is a Neural Network?
-
+ Einstein’s formula: $E = mc^2$
 A neural network is a computational model inspired by the human brain's structure. It consists of interconnected nodes (neurons) organized in layers:
 
 - **Input Layer**: Receives the raw data
