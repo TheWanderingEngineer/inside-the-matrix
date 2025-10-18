@@ -5,7 +5,8 @@ import { posts } from "@/data/posts";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 const withBase = (p?: string) =>
   p ? `${import.meta.env.BASE_URL}${p.replace(/^\//, "")}` : ""; // CHANGED
 const BlogPost = () => {
@@ -83,6 +84,8 @@ const BlogPost = () => {
             {/* Article content */}
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <ReactMarkdown
+                remarkPlugins={[remarkMath]}
+                rehypePlugins={[rehypeKatex]}
                 components={{
                   code({ node, inline, className, children, ...props }: any) {
                     const match = /language-(\w+)/.exec(className || "");
