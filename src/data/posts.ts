@@ -303,6 +303,7 @@ It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Mode
 ![alt](images/lora-mat.png)
 test1
 test2
+
 test3
 test4\n
 test5
@@ -318,6 +319,7 @@ In linear algebra, the rank of a matrix refers to the maximum number of linearly
 
 // Markdown syntax you can use inside `content`:
 //
+// New line: \n
 // # Heading 1
 // ## Heading 2
 // **bold**
