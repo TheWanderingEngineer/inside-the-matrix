@@ -459,7 +459,7 @@ This is often done by initializing $$A$$ with small random values (e.g. samples 
 zero-mean and some variance) and $$B$$ with zeros, ensuring that the initial output of the LoRA adaptors does 
 not significantly alter the behavior of the pretrained model, as shown in the LoRA diagram found in
 in the original paper, and shown above.\n
-The matrix $$A$$ is choosen to have small values to prevent large initial and sudden updates, 
+The matrix $$A$$ is chosen to have small values to prevent large initial and sudden updates, 
 while $$B$$ is set to zero to ensure that the **initial contribution** of the LoRA adaptors is negligible. We
 can't have both matrices initialized with zeros because then the gradients would also zero out,
 preventing any learning from happening. We can swap the initialization (A=0, B=random) but
@@ -488,10 +488,12 @@ parts are omitted for simplicity.
 <p align="center">
   <img src="images/bert.png" alt="one-block-bert" width="600"/>
 </p>
-Now let's see where LoRA adaptors are placed inside BERT:
+Now let's see where LoRA adaptors are placed inside BERT **W** :
 <p align="center">
   <img src="images/bert-lora.png" alt="one-block-bert-lora" width="600"/>
 </p>
+
+**W**
 These adaptors shown in the image above are the low-rank matrices $$A$$ and $$B$$, which are basically 
 small linear layers added in parallel to the original weight matrices (Across all heads) in the attention
  and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
