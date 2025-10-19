@@ -350,11 +350,11 @@ But how does this help in reducing parameters in LoRA?
 
 ## Matrix Decomposition
 Matrix decomposition is the process of breaking down a matrix into a product of two or more matrices.
-For example, the above matrix $$X$$ can be decomposed into two matrices smaller matrices **A** and **B** such that:
+For example, the above matrix $$X$$ can be decomposed into two matrices smaller matrices $$A$$ and $$B$$ such that:
 $$
 X = A B
 $$
-where $$A$$ is a ($$R\\timesr$$) 5x2 matrix and $$B$$ is a 2x5 ($$r\\times\\C$$) matrix representing
+where $$A$$ is a ($$R\\timesr$$) 5x2 matrix and $$B$$ is a 2x5 ($$r\\timesC$$) matrix representing
 the rank-2 factorization of $$X$$, where R is the number of rows (5), C is the number of columns (5),
 and r is the rank (2). The matrices $$A$$ and **B** are constructed 
 such that when we multiply **A** and $$B$$, we get back the original matrix $$X$$:
@@ -415,7 +415,7 @@ the weight matrices in large language models, which can have millions (or even b
 In LoRA, we add small *low-rank adapters* (hence the name) to selected layers of a pretrained Transformer, then
 fine-tune only these adapters while keeping the original weights frozen, these adapters are represented as
 two low-rank matrices $$A$$ and $$B$$ that are multiplied together to form a low-rank update 
-to the original weight matrix as shown earlier. \
+to the original weight matrix as shown earlier.
 The rank $$r$$ is a hyperparameter that you can choose based on your compute and performance needs. Keep in mind
 that lower $$r$$ means more parameter reduction but potentially more information loss, $$r$$ is usually set 
 to a small value like 4 or 8, but can go higher up to 64 and beyond depending on the model size and task.\n
