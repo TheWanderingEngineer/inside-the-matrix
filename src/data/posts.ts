@@ -306,7 +306,7 @@ too many jargons at once... Let's break it down, starting with the concept of "r
 
 ## What is Rank?
 The rank of a matrix is the smallest number of *linearly independent* rows (or columns) in the matrix.
-linearly independent means that no row (or column) can be represented as a linear combination of the others.
+linear independence means that no row (or column) can be represented as a linear combination of the others.
 For example, consider the following matrix:
 <p align="center">
   <img src="images/mat-rank-2.png" alt="LoRA Matrix" width="400"/>
@@ -336,25 +336,25 @@ $$
 \\end{aligned}
 $$
 
-Hence, the rank of **X** is **2** (only two linearly independent rows). \n
+Hence, the rank of $$X$$ is **2** (only two linearly independent rows). \n
 One important note is that the rank of a matrix gives us an idea of "information content" of a matrix,
 i.e., how many rows (or columns) are needed to represent the entire matrix. **Higher-rank matrices 
 indicate more information content (less compressible), while lower-rank matrices indicate redundancy 
 (more compressible), since with a few rows, we can represent the other rows, thus reconstructing the orginal
-matrix.**\n
+matrix.**
 But how does this help in reducing parameters in LoRA?
 
 
 ## Matrix Decomposition
 Matrix decomposition is the process of breaking down a matrix into a product of two or more matrices.
-For example, the above matrix **X** can be decomposed into two matrices smaller matrices **A** and **B** such that:
+For example, the above matrix $$X$$ can be decomposed into two matrices smaller matrices **A** and **B** such that:
 $$
 X = A B
 $$
-where **A** is a (Rxr) 5x2 matrix and **B** is a 2x5 (rxC) matrix representing
-the rank-2 factorization of **X**, where R is the number of rows (5), C is the number of columns (5),
-and r is the rank (2). The matrices **A** and **B** are constructed 
-such that when we multiply **A** and **B**, we get back the original matrix **X**:
+where $$A$$ is a ($$R\\timesr$$) 5x2 matrix and $$B$$ is a 2x5 ($$r\\timesC$$) matrix representing
+the rank-2 factorization of $$X$$, where R is the number of rows (5), C is the number of columns (5),
+and r is the rank (2). The matrices $$A$$ and **B** are constructed 
+such that when we multiply **A** and $$B$$, we get back the original matrix $$X$$:
 Originally we have:
 
 $$
@@ -392,29 +392,29 @@ X = A B =
 \\end{bmatrix}
 $$
 
-In this example, we used full rank (**r** = 2) here, meaning, the rank of the decomposition is the same as 
-the rank of the matrix, however, we can use lower rank like **r** = 1 even when the rank of the original
+In this example, we used full rank ($$r$$ = 2) here, meaning, the rank of the decomposition is the same as 
+the rank of the matrix, however, we can use lower rank like $$r$$ = 1 even when the rank of the original
 matrix is 2, though you should expect some loss of information (sometime can be neglibile).
-We can clearly see that **r** is a hyperparameter that determines the size of the decomposed matrices, and thus,
+We can clearly see that $$r$$ is a hyperparameter that determines the size of the decomposed matrices, and thus,
 the number of parameters needed to represent the original matrix. \n
 Let's see how this helps in reducing parameters in LoRA.
 
 ### Parameter Reduction
 By choosing a smaller rank (or even the full rank), we can reduce the number of parameters significantly.
-For example, the original matrix **X** has 5x5 = 25 parameters, while the rank-2 factorization uses 
+For example, the original matrix $$X$$ has 5x5 = 25 parameters, while the rank-2 factorization uses 
 5x2 + 2x5 = 20 parameters only! That's already **20%** reduction in parameters even with full rank! \n
 If we use rank-1 factorization, we get even more reduction with a total of 5x1 + 1x5 = 10 parameters
-representing the entire **X** matrix. We can expect much more reduction when dealing with larger matrices, like
+representing the entire $$X$$ matrix. We can expect much more reduction when dealing with larger matrices, like
 the weight matrices in large language models, which can have millions (or even billions) of parameters.
 
 ## LoRA in Mechanism
 
-In LoRA, we add small *low-rank adapters* (hence, the name) to selected layers of a pretrained Transformer, then
+In LoRA, we add small *low-rank adapters* (hence the name) to selected layers of a pretrained Transformer, then
 fine-tune only these adapters while keeping the original weights frozen, these adapters are represented as
 two low-rank matrices $$A$$ and $$B$$ that are multiplied together to form a low-rank update 
 to the original weight matrix as shown earlier. \
-The rank **r** is a hyperparameter that you can choose based on your compute and performance needs. Keep in mind
-that lower **r** means more parameter reduction but potentially more information loss, **r** is usually set 
+The rank $$r$$ is a hyperparameter that you can choose based on your compute and performance needs. Keep in mind
+that lower $$r$$ means more parameter reduction but potentially more information loss, $$r$$ is usually set 
 to a small value like 4 or 8, but can go higher up to 64 and beyond depending on the model size and task.\n
 The image below is taken from the original LoRA paper showing how LoRA adaptors are injected into a pretrained model.
 
