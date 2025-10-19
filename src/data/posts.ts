@@ -354,7 +354,7 @@ For example, the above matrix $$X$$ can be decomposed into two matrices smaller 
 $$
 X = A B
 $$
-where $$A$$ is a ($$R\\\\timesr$$) 5x2 matrix and $$B$$ is a 2x5 ($$r\\\\timesC$$) matrix representing
+where $$A$$ is a ($$R\\timesr$$) 5x2 matrix and $$B$$ is a 2x5 ($$r\\timesC$$) matrix representing
 the rank-2 factorization of $$X$$, where R is the number of rows (5), C is the number of columns (5),
 and r is the rank (2). The matrices $$A$$ and **B** are constructed 
 such that when we multiply **A** and $$B$$, we get back the original matrix $$X$$:
@@ -439,7 +439,7 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-{where}\\ W \\in{R}^{d\\\\timesd} \; A \\in {R}^{d\\\\timesr},
+{where}\\ W \\in{R}^{d\\timesd} \; A \\in {R}^{d\\timesr},
 $$
 $$
 B \\in {R}^{r\\\\timesd},
@@ -449,7 +449,7 @@ r \\ll d
 $$
 
 Where $$W_{\t{final}}$$ is the final weight matrix that is used in 
-the forward pass of model as usal, d (aka $$d_model$$) is the model dimension or hidden size (in BERT-Large d=1024)
+the forward pass of model as usal, d (aka $$d_{model}$$) is the model dimension or hidden size (in BERT-Large d=1024)
 , and $$AB$$ is the low-rank update from LoRA.\n
 This way, the model benefits from both the pretrained knowledge inside $$W$$ and the task-specific 
 adaptations learned through the LoRA matrices $$A$$ and $$B$$ during fine-tuning.
