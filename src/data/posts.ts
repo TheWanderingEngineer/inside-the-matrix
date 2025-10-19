@@ -300,6 +300,8 @@ print("Wake up, Neo.")
   summary: "Inside the low-rank adaptation that reshaped AI fine-tuning.",
   content: `
 # Inside the Matrix: LoRA Explained
+$$a \times b$$ 
+$$a \\times b$$
 Low-Rank Adaptation (LoRA) is a training (fine-tuning) technique that is one of the most popular Parameter-Efficient Fine-Tuning (PEFT) methods.
 It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by 
 Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.\n
@@ -498,7 +500,7 @@ Now let's see where LoRA adaptors are placed inside BERT.
   <img src="images/bert-lora.png" alt="one-block-bert-lora" width="600"/>
 </p>
 
-
+$$a \\times b$$
 These adaptors shown in the image above are the low-rank matrices $$A$$ and $$B$$, which are basically 
 small linear layers added in parallel to the original weight matrices (Across all heads) in the attention
 and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
