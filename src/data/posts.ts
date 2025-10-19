@@ -291,6 +291,9 @@ print("Wake up, Neo.")
   date: "2025-10-17",
   readTime: "6 min read"
 },
+
+
+
 {
   id: "lora-article",
   title: "How LoRA Shrinks the Training Matrix",
@@ -436,17 +439,18 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-{where}\\ W \\in{R}^{d_{\t{out}}\\times\t d_{\t{in}}} \; A \\in {R}^{d_{\t{out}}\\times\t r},
+{where}\\ W \\in{R}^{d\\timesd} \; A \\in {R}^{d\\timesr},
 $$
 $$
-B \\in {R}^{r \\times\t d_{\t{in}}},
+B \\in {R}^{r\\timesd},
 $$
 $$
-r \\ll \\min(d_{\t{out}}, d_{\t{in}})
+r \\ll d
 $$
 
-where $$W_{\t{final}}$$ is the final weight matrix that is used in 
-the forward pass of model as usal and $$AB$$ is the low-rank update from LoRA.\n
+Where $$W_{\t{final}}$$ is the final weight matrix that is used in 
+the forward pass of model as usal, d (aka $$d_model$$) is the model dimension or hidden size (in BERT-Large d=1024)
+, and $$AB$$ is the low-rank update from LoRA.\n
 This way, the model benefits from both the pretrained knowledge inside $$W$$ and the task-specific 
 adaptations learned through the LoRA matrices $$A$$ and $$B$$ during fine-tuning.
 
@@ -498,7 +502,7 @@ Now let's see where LoRA adaptors are placed inside BERT.
 These adaptors shown in the image above are the low-rank matrices $$A$$ and $$B$$, which are basically 
 small linear layers added in parallel to the original weight matrices (Across all heads) in the attention
 and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
-adaptors, which can be as low as 1-2% of the total parameters, depending on the selected rank **r**. This results in
+adaptors, which can be as low as 1-2% of the total parameters, depending on the selected rank $$r$$. This results in
 huge savings in terms of memory and computation during training. **Note that during inference, the LoRA weights are 
 merged with the original weights, so there is no additional latency introduced during prediction, which is 
 a big advantage of LoRA over other PEFT techniques.**
