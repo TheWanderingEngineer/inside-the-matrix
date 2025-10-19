@@ -301,7 +301,7 @@ Low-Rank Adaptation (LoRA) is a training (fine-tuning) technique that is one of 
 It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.
 ## What is Rank?
 <p align="center">
-  <img src="/inside-the-matrix/images/lora-mat.png" alt="LoRA Matrix" width="500"/>
+  <img src="images/lora-mat.png" alt="LoRA Matrix" width="500"/>
 </p>
 test1
 test2
