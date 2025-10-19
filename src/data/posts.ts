@@ -354,7 +354,7 @@ For example, the above matrix $$X$$ can be decomposed into two matrices smaller 
 $$
 X = A B
 $$
-where $$A$$ is a ($$R\\timesr$$) 5x2 matrix and $$B$$ is a 2x5 ($$r\\timesC$$) matrix representing
+where $$A$$ is a ($$R\\\\timesr$$) 5x2 matrix and $$B$$ is a 2x5 ($$r\\\\timesC$$) matrix representing
 the rank-2 factorization of $$X$$, where R is the number of rows (5), C is the number of columns (5),
 and r is the rank (2). The matrices $$A$$ and **B** are constructed 
 such that when we multiply **A** and $$B$$, we get back the original matrix $$X$$:
@@ -439,10 +439,10 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-{where}\\ W \\in{R}^{d\\timesd} \; A \\in {R}^{d\\timesr},
+{where}\\ W \\in{R}^{d\\\\timesd} \; A \\in {R}^{d\\\\timesr},
 $$
 $$
-B \\in {R}^{r\\timesd},
+B \\in {R}^{r\\\\timesd},
 $$
 $$
 r \\ll d
