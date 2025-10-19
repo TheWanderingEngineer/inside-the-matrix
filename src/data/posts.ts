@@ -434,11 +434,11 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-\\t{where}\\ W \\in{R}^{d_{\t{out}} \t d_{\t{in}}}, \; A \\in \m{R}^{d_{\t{out}} \t r},
+{where}\\ W \\in{R}^{d_{\t{out}}x\t d_{\t{in}}} \; A \\in \m{R}^{d_{\t{out}}x\t r},
 $$
 $$
-B \\in \\m{R}^{r \t d_{\t{in}}} \; 
-r \\ll \\min(d_{\t{out}}, d_{\t{in}}).
+B \\in {R}^{r x\t d_{\t{in}}} \; 
+r \\ll \\min(d_{\t{out}}, d_{\t{in}})
 $$
 
 where $$W_{\t{final}}$$ is the original weight matrix which are the weights used in 
