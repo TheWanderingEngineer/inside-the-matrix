@@ -345,14 +345,14 @@ X \approx A \times B
 $$
 Where \( A \) is of size \( (4 \times 2) \) and \( B \) is of size \( (2 \times 3) \):
 $$
-X = A B =
-\begin{bmatrix}
-1 & 2 & 3 \\
-2 & 4 & 6 \\
+X = A B =6 \\
 1 & 0 & 1 \\
 2 & 0 & 2
 \end{bmatrix}
-\approx
+\appr
+\begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & ox
 \begin{bmatrix}
 1 & 0 \\
 2 & 0 \\
@@ -363,6 +363,9 @@ X = A B =
 1 & 2 & 3 \\
 1 & 0 & 1
 \end{bmatrix}
+$$
+$$
+\\int_0^1 x\\,dx = \\tfrac{1}{2}
 $$
 Now the main parameter here is the rank (2 in this case), which determines the size of the decomposed matrices.
 By choosing a smaller rank, we can reduce the number of parameters significantly.
