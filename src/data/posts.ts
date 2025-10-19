@@ -290,5 +290,49 @@ print("Wake up, Neo.")
   image: "images/matrix-cover.jpg",
   date: "2025-10-17",
   readTime: "6 min read"
+},
+{
+  id: "lora-article",
+  title: "When the Matrix is Smaller than You Think: LoRA Explained",
+  summary: "Inside the low-rank adaptation that reshaped AI fine-tuning.",
+  content: `
+# Inside the Matrix: LoRA Explained
+Low-Rank Adaptation (LoRA) is a training (fine-tuning) technique that is one of the most popular Parameter-Efficient Fine-Tuning (PEFT) methods.
+It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.
+## What is Rank?
+![alt](images/lora-mat.png)
+test1
+test2
+test3
+test4\n
+test5
+In linear algebra, the rank of a matrix refers to the maximum number of linearly independent row or column vectors in the matrix. In the context of LoRA, low-rank matrices are used to approximate the weight updates needed for fine-tuning.
+  `,
+  tags: ["Compression", "Fine-Tuning", "LoRA"],
+  image: "images/lora.png",
+  date: "2025-10-17",
+  readTime: "6 min read"
 }
 ];
+
+
+// Markdown syntax you can use inside `content`:
+//
+// # Heading 1
+// ## Heading 2
+// **bold**
+// *italic*
+// `inline code`
+// ```python ... ```  ← for code blocks
+// - bullet list
+// 1. numbered list
+// > quote
+// [text](url) ← link
+// ![alt](image-path) ← image
+
+// Math syntax (requires remark-math + rehype-katex):
+// Inline: $E = mc^2$
+// Block:
+// $$
+// \nabla_\theta L(\theta) = \frac{\partial L}{\partial \theta}
+// $$
