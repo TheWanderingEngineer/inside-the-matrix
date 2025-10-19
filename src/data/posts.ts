@@ -318,65 +318,72 @@ the first and third rows. With these two rows, we can construct the others, as s
 $$
 X = A B =
 \\begin{bmatrix}
-1 & 2 & 3 \\\\
-2 & 4 & 6 \\\\
-1 & 0 & 1 \\\\
-2 & 0 & 2
+1 & 2 & 3 & 4 & 5 \\\\
+0 & 1 & 1 & 2 & 3 \\\\
+1 & 3 & 4 & 6 & 8 \\\\
+2 & 3 & 5 & 6 & 7 \\\\
+-1 & 2 & 1 & 4 & 7
 \\end{bmatrix}
-\\approx
+=
 \\begin{bmatrix}
 1 & 0 \\\\
-2 & 0 \\\\
 0 & 1 \\\\
-0 & 2
+1 & 1 \\\\
+2 & -1 \\\\
+-1 & 4
 \\end{bmatrix}
 \\begin{bmatrix}
-1 & 2 & 3 \\\\
-1 & 0 & 1
+1 & 2 & 3 & 4 & 5 \\\\
+0 & 1 & 1 & 2 & 3
 \\end{bmatrix}
 $$
 
-We can see that:
+Because:
 
 $$
 \\begin{aligned}
-\\text{Row}_2 &= 2 \\times \\text{Row}_1, \\\\
-\\text{Row}_4 &= 2 \\times \\text{Row}_3.
+\\text{Row}_3 &= \\text{Row}_1 + \\text{Row}_2, \\\\
+\\text{Row}_4 &= 2\\,\\text{Row}_1 - \\text{Row}_2, \\\\
+\\text{Row}_5 &= -\\text{Row}_1 + 4\\,\\text{Row}_2.
 \\end{aligned}
 $$
 
-Hence, the rank of \( X \) is **2** (only two linearly independent rows).
+Hence, the rank of **X** is **2** (only two linearly independent rows). We can
+conclude that the rank of a matrix gives us an idea of "information content" of a matrix,
+i.e., how many rows (or columns) are needed to represent the entire matrix. **Higher ranks 
+indicate more information content (less compressible), while lower-rank matrices indicate redundancy 
+(more compressible).**
 But how does this help in reducing parameters in LoRA?
 ## Matrix Decomposition
 Matrix decomposition is the process of breaking down a matrix into a product of two or more matrices.
-When we know the rank of a matrix, we can decompose it into two smaller matrices, without losing much information.
-for example, the above matrix \( X \) can be decomposed into two matrices \( A \) and \( B \):
+Now, 
+for example, the above matrix **X** can be decomposed into two matrices \( A \) and \( B \):
 $$
-X \approx A \times B =
+X = A \times B =
 \\begin{bmatrix}
-1 & 2 & 3 \\\\
-2 & 4 & 6 \\\\
-1 & 0 & 1 \\\\
-2 & 0 & 2
+1 & 2 & 3 & 4 & 5 \\\\
+0 & 1 & 1 & 2 & 3 \\\\
+1 & 3 & 4 & 6 & 8 \\\\
+2 & 3 & 5 & 6 & 7 \\\\
+-1 & 2 & 1 & 4 & 7
 \\end{bmatrix}
-\\approx
+=
 \\begin{bmatrix}
 1 & 0 \\\\
-2 & 0 \\\\
 0 & 1 \\\\
-0 & 2
+1 & 1 \\\\
+2 & -1 \\\\
+-1 & 4
 \\end{bmatrix}
 \\begin{bmatrix}
-1 & 2 & 3 \\\\
-1 & 0 & 1
+1 & 2 & 3 & 4 & 5 \\\\
+0 & 1 & 1 & 2 & 3
 \\end{bmatrix}
 $$
 
 Now the main parameter here is the rank (2 in this case), which determines the size of the decomposed matrices.
 By choosing a smaller rank, we can reduce the number of parameters significantly.
-For example, the original matrix \( X \) has \( 4 \times 3 = 12 \) parameters, while the decomposed matrices with rank 1
-have \( (4 \times 1) + (1 \times 3) = 7 \) parameters, which is a reduction of about 41.67%. This technique 
-is the core idea behind LoRA, and its efficiency increases with larger matrices commonly found in deep learning models (like LLMs)
+For example, the original matrix \( X \) has \( 5 \\times 5 = 25 \) parameters, while a rank-2 factorization uses \( (5 \\times 2) + (2 \\times 5) = 20 \) parameters — a **20%** reduction.
 ## LoRA in Action
 test3
 test4\n
