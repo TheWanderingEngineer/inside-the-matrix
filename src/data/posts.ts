@@ -312,9 +312,9 @@ For example, consider the following matrix:
   <img src="images/mat-rank-2.png" alt="LoRA Matrix" width="400"/>
 </p>
 \n
-This matrix has a rank of 2 because there are 2 linearly independent rows (or columns),
+This matrix has a rank of 2 because there are two linearly independent rows,
 meaning that we can represent the entire matrix using just 2 rows (or columns), these two are 
-the first and third rows. With these two rows, we can construct the others, like so:
+the first and third rows. With these two rows, we can construct the others, as shown below:
 $$
 X = A B =
 \\begin{bmatrix}
@@ -339,10 +339,10 @@ $$
 We can see that:
 
 $$
-\begin{aligned}
-\text{Row}_2 &= 2 \times \text{Row}_1, \\
-\text{Row}_4 &= 2 \times \text{Row}_3.
-\end{aligned}
+\\begin{aligned}
+\\text{Row}_2 &= 2 \\times \\text{Row}_1, \\\\
+\\text{Row}_4 &= 2 \\times \\text{Row}_3.
+\\end{aligned}
 $$
 
 Hence, the rank of \( X \) is **2** (only two linearly independent rows).
@@ -352,32 +352,26 @@ Matrix decomposition is the process of breaking down a matrix into a product of 
 When we know the rank of a matrix, we can decompose it into two smaller matrices, without losing much information.
 for example, the above matrix \( X \) can be decomposed into two matrices \( A \) and \( B \):
 $$
-X \approx A \times B
-$$
-Where \( A \) is of size \( (4 \times 2) \) and \( B \) is of size \( (2 \times 3) \):
-$$
-X = A B =6 \\
-1 & 0 & 1 \\
+X \approx A \times B =
+\\begin{bmatrix}
+1 & 2 & 3 \\\\
+2 & 4 & 6 \\\\
+1 & 0 & 1 \\\\
 2 & 0 & 2
-\end{bmatrix}
-\appr
-\begin{bmatrix}
-1 & 2 & 3 \\
-2 & 4 & ox
-\begin{bmatrix}
-1 & 0 \\
-2 & 0 \\
-0 & 1 \\
+\\end{bmatrix}
+\\approx
+\\begin{bmatrix}
+1 & 0 \\\\
+2 & 0 \\\\
+0 & 1 \\\\
 0 & 2
-\end{bmatrix}
-\begin{bmatrix}
-1 & 2 & 3 \\
+\\end{bmatrix}
+\\begin{bmatrix}
+1 & 2 & 3 \\\\
 1 & 0 & 1
-\end{bmatrix}
+\\end{bmatrix}
 $$
-$$
-\\int_0^1 x\\,dx = \\tfrac{1}{2}
-$$
+
 Now the main parameter here is the rank (2 in this case), which determines the size of the decomposed matrices.
 By choosing a smaller rank, we can reduce the number of parameters significantly.
 For example, the original matrix \( X \) has \( 4 \times 3 = 12 \) parameters, while the decomposed matrices with rank 1
