@@ -7,6 +7,9 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
+import "katex/dist/katex.min.css";
+
 const withBase = (p?: string) =>
   p ? `${import.meta.env.BASE_URL}${p.replace(/^\//, "")}` : ""; // CHANGED
 const BlogPost = () => {
@@ -85,7 +88,7 @@ const BlogPost = () => {
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <ReactMarkdown
                 remarkPlugins={[remarkMath]}
-                rehypePlugins={[rehypeKatex]}
+                rehypePlugins={[rehypeRaw, rehypeKatex]}
                 components={{
                   code({ node, inline, className, children, ...props }: any) {
                     const match = /language-(\w+)/.exec(className || "");
@@ -103,6 +106,11 @@ const BlogPost = () => {
                         {children}
                       </code>
                     );
+                  },
+                  img({ src = "", alt = "", ...props }) {
+                    // ensure images work from Markdown **and** raw HTML by prepending the Vite base path
+                    const resolved = withBase(src);
+                    return <img src={resolved} alt={alt} className="mx-auto" {...props} />;
                   },
                 }}
               >
