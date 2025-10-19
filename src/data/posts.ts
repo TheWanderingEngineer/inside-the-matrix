@@ -314,7 +314,61 @@ For example, consider the following matrix:
 \n
 This matrix has a rank of 2 because there are two linearly independent rows,
 meaning that we can represent the entire matrix using just 2 rows (or columns), these two are 
-the first and third rows. With these two rows, we can construct the others, as shown below:
+the first and second rows. With these two rows, we can construct the others, allowing to reconstruct the
+the entire orginal matrix as shown below:
+
+$$
+X =
+\\begin{bmatrix}
+1 & 2 & 3 & 4 & 5 \\\\
+0 & 1 & 1 & 2 & 3 \\\\
+1 & 3 & 4 & 6 & 8 \\\\
+2 & 3 & 5 & 6 & 7 \\\\
+-1 & 2 & 1 & 4 & 7
+\\end{bmatrix}
+$$
+We can express rows 3, 4, and 5 as linear combinations (weighted sum) of rows 1 and 2:
+$$
+\\begin{aligned}
+\\text{Row}_3 &= \\text{Row}_1 + \\text{Row}_2, \\\\
+\\text{Row}_4 &= 2\\,\\text{Row}_1 - \\text{Row}_2, \\\\
+\\text{Row}_5 &= -\\text{Row}_1 + 4\\,\\text{Row}_2.
+\\end{aligned}
+$$
+
+Hence, the rank of **X** is **2** (only two linearly independent rows). \n
+One important note is that the rank of a matrix gives us an idea of "information content" of a matrix,
+i.e., how many rows (or columns) are needed to represent the entire matrix. **Higher-rank matrices 
+indicate more information content (less compressible), while lower-rank matrices indicate redundancy 
+(more compressible), since with a few rows, we can represent the other rows, thus reconstructing the orginal
+matrix.**\n
+But how does this help in reducing parameters in LoRA?
+
+
+## Matrix Decomposition
+Matrix decomposition is the process of breaking down a matrix into a product of two or more matrices.
+For example, the above matrix **X** can be decomposed into two matrices smaller matrices **A** and **B** such that:
+$$
+X = A B
+$$
+where **A** is a (Rxr) 5x2 matrix and **B** is a 2x5 (rxC) matrix representing
+the rank-2 factorization of **X**, where R is the number of rows (5), C is the number of columns (5),
+and r is the rank (2). The matrices **A** and **B** are constructed 
+such that when we multiply **A** and **B**, we get back the original matrix **X**:
+Originally we have:
+
+$$
+X =
+\\begin{bmatrix}
+1 & 2 & 3 & 4 & 5 \\\\
+0 & 1 & 1 & 2 & 3 \\\\
+1 & 3 & 4 & 6 & 8 \\\\
+2 & 3 & 5 & 6 & 7 \\\\
+-1 & 2 & 1 & 4 & 7
+\\end{bmatrix}
+$$
+
+After decomposition, we have:
 $$
 X = A B =
 \\begin{bmatrix}
@@ -338,57 +392,82 @@ X = A B =
 \\end{bmatrix}
 $$
 
-Because:
+In this example, we used full rank (**r** = 2) here, meaning, the rank of the decomposition is the same as 
+the rank of the matrix, however, we can use lower rank like **r** = 1 even when the rank of the original
+matrix is 2, though you should expect some loss of information (sometime can be neglibile).
+We can clearly see that **r** is a hyperparameter that determines the size of the decomposed matrices, and thus,
+the number of parameters needed to represent the original matrix. \n
+Let's see how this helps in reducing parameters in LoRA.
+
+### Parameter Reduction
+By choosing a smaller rank (or even the full rank), we can reduce the number of parameters significantly.
+For example, the original matrix **X** has 5x5 = 25 parameters, while the rank-2 factorization uses 
+5x2 + 2x5 = 20 parameters only! That's already **20%** reduction in parameters even with full rank! \n
+If we use rank-1 factorization, we get even more reduction with a total of 5x1 + 1x5 = 10 parameters
+representing the entire **X** matrix. We can expect much more reduction when dealing with larger matrices, like
+the weight matrices in large language models, which can have millions (or even billions) of parameters.
+
+## LoRA in Mechanism
+In LoRA, we apply this concept of matrix decomposition to the weight matrices of certain layers in a 
+pretrained Transformer model. Instead of updating the full weight matrix during fine-tuning, we freeze the
+original, pretrained weights and inject low-rank matrices (A & B) that are trainable, where the rank **r**
+is a hyperparameter that you can choose based on your compute and performance needs. Keep in mind
+that lower **r** means more parameter reduction but potentially more information loss, **r** is usually set 
+to a small value like 4 or 8, but can go higher up to 64 and beyond depending on the model size and task.\n
+The image below is taken from the original LoRA paper showing how LoRA adaptors are injected into a pretrained model.
+
+<p align="center">
+  <img src="images/lora-diagram.png" alt="LoRA Matrix" width="600"/>
+</p>
+
+We can see that during fine-tuning, only these LoRA adaptor matrices are updates,
+while the pretrained weights remain unchanged. This results in significant savings in terms of trainable parameters.
+
+### How Original Weights and LoRA Adaptors Work Together
+During training, the original weight matrix **W** is frozen while the LoRA matrices **A** and **B** are
+updated through backpropagation producing the low-rank $$\Delta W = A B$$. During inference
+(prediction), the original weights and the LoRA weights are combined together
+to produce the final output:
+
 
 $$
-\\begin{aligned}
-\\text{Row}_3 &= \\text{Row}_1 + \\text{Row}_2, \\\\
-\\text{Row}_4 &= 2\\,\\text{Row}_1 - \\text{Row}_2, \\\\
-\\text{Row}_5 &= -\\text{Row}_1 + 4\\,\\text{Row}_2.
-\\end{aligned}
+W_{\text{final}} = W + \Delta W = W_{\text{pretrained}} + A B
+
+
+W_{\text{final}} = W + \Delta W = W_{\text{pretrained}} + A B, \\
+\text{where } W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}, \; A \in \mathbb{R}^{d_{\text{out}} \times r}, \; B \in \mathbb{R}^{r \times d_{\text{in}}}, \; r \ll \min(d_{\text{out}}, d_{\text{in}}).
 $$
 
-Hence, the rank of **X** is **2** (only two linearly independent rows). We can
-conclude that the rank of a matrix gives us an idea of "information content" of a matrix,
-i.e., how many rows (or columns) are needed to represent the entire matrix. **Higher ranks 
-indicate more information content (less compressible), while lower-rank matrices indicate redundancy 
-(more compressible).**
-But how does this help in reducing parameters in LoRA?
-## Matrix Decomposition
-Matrix decomposition is the process of breaking down a matrix into a product of two or more matrices.
-Now, 
-for example, the above matrix **X** can be decomposed into two matrices \( A \) and \( B \):
-$$
-X = A \times B =
-\\begin{bmatrix}
-1 & 2 & 3 & 4 & 5 \\\\
-0 & 1 & 1 & 2 & 3 \\\\
-1 & 3 & 4 & 6 & 8 \\\\
-2 & 3 & 5 & 6 & 7 \\\\
--1 & 2 & 1 & 4 & 7
-\\end{bmatrix}
-=
-\\begin{bmatrix}
-1 & 0 \\\\
-0 & 1 \\\\
-1 & 1 \\\\
-2 & -1 \\\\
--1 & 4
-\\end{bmatrix}
-\\begin{bmatrix}
-1 & 2 & 3 & 4 & 5 \\\\
-0 & 1 & 1 & 2 & 3
-\\end{bmatrix}
-$$
+where $$W_{\text{final}}$$ is the original weight matrix which are the weights used in 
+the forward pass of model as usal, $$\Delta W$$ is the update,
+and **AB** is the low-rank update from LoRA.\n
+This way, the model benefits from both the pretrained knowledge in **W** and the task-specific adaptations learned
+through the LoRA matrices **A** and **B**.
 
-Now the main parameter here is the rank (2 in this case), which determines the size of the decomposed matrices.
-By choosing a smaller rank, we can reduce the number of parameters significantly.
-For example, the original matrix \( X \) has \( 5 \\times 5 = 25 \) parameters, while a rank-2 factorization uses \( (5 \\times 2) + (2 \\times 5) = 20 \) parameters — a **20%** reduction.
-## LoRA in Action
-test3
-test4\n
-test5
-In linear algebra, the rank of a matrix refers to the maximum number of linearly independent row or column vectors in the matrix. In the context of LoRA, low-rank matrices are used to approximate the weight updates needed for fine-tuning.
+
+### LoRA Matrices Initialization
+The LoRA matrices **A** and **B** are usually initialized such that the product **AB** 
+is close to zero at the start of training.
+This is often done by initializing **A** with small random values (e.g. samples from a normal distribution with
+zero-mean and some variance) and **B** with zeros, ensuring that the initial output of the LoRA adaptors does 
+not significantly alter the behavior of the pretrained model. \n
+The matrix **A** is choosen to have small values to prevent large initial and sudden updates, 
+while **B** is set to zero to ensure that the **initial contribution** of the LoRA adaptors is negligible. We
+can't have both matrices initialized with zeros because then the gradients would also zero out,
+preventing any learning from happening.\n
+
+### What to LoRA
+LoRA can be applied to different weight matrices across various layers of the Transformer architecture,
+including:
+- Attention projection matrices (query, key, value, output)
+- Feed-forward network weights
+- Cross-attention layers (Common in Stable Diffusion fine-tuning)
+- Other linear layers within the model
+
+The choice of which to LoRA depends on the model architecture, resources, and the specific task at hand.
+The original paper applied LoRA to the query and value projection matrices in the attention layers
+which was shown to be very effective.\n
+
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
   image: "images/lora.png",
@@ -425,3 +504,4 @@ In linear algebra, the rank of a matrix refers to the maximum number of linearly
 // $$
 // \nabla_\theta L(\theta) = \frac{\partial L}{\partial \theta}
 // $$
+
