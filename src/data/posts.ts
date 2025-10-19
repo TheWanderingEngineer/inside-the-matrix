@@ -293,7 +293,7 @@ print("Wake up, Neo.")
 },
 {
   id: "lora-article",
-  title: "When the Matrix is Smaller than You Think: LoRA Explained",
+  title: "How LoRA Shrinks the Training Matrix",
   summary: "Inside the low-rank adaptation that reshaped AI fine-tuning.",
   content: `
 # Inside the Matrix: LoRA Explained
@@ -301,7 +301,7 @@ Low-Rank Adaptation (LoRA) is a training (fine-tuning) technique that is one of 
 It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.
 ## What is Rank?
 <p align="center">
-  <img src="images/lora-mat.png" alt="LoRA Matrix" width="500"/>
+  <img src="images/mat-rank-2.png" alt="LoRA Matrix" width="400"/>
 </p>
 test1
 test2
@@ -332,7 +332,13 @@ In linear algebra, the rank of a matrix refers to the maximum number of linearly
 // 1. numbered list
 // > quote
 // [text](url) ← link
-// ![alt](image-path) ← image
+// ![alt](image-path) ← image v(if not working use full path: ![alt](/inside-the-matrix/images/lora-mat.png))
+
+// centered image:
+// <p align="center">
+// <img src="images/lora-mat.png" alt="LoRA Matrix" width="500"/>
+// </p>
+
 
 // Math syntax (requires remark-math + rehype-katex):
 // Inline: $E = mc^2$
