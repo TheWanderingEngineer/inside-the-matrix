@@ -424,32 +424,28 @@ We can see that during fine-tuning, only these LoRA adaptor matrices are updates
 while the pretrained weights remain unchanged. This results in significant savings in terms of trainable parameters.
 
 ### How Original Weights and LoRA Adaptors Work Together
-During training, the original weight matrix **W** is frozen while the LoRA matrices **A** and **B** are
+During training, the original weight matrix $$W$$ is frozen while the LoRA matrices $$A$$ and $$B$$ are
 updated through backpropagation producing the low-rank $$\\Delta W = A B$$. During inference
 (prediction), the original weights and the LoRA weights are combined together
 to produce the final output:
 
 
 $$
-W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B
-$$
-
-$$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-\t{where }  W \i \m{R}^{d_{\t{out}} \t d_{\t{in}}}, \; A \\in \m{R}^{d_{\t{out}} \t r},
+\\t{where}\\ W \\in{R}^{d_{\t{out}} \t d_{\t{in}}}, \; A \\in \m{R}^{d_{\t{out}} \t r},
 $$
 $$
-B \\in \\m{R}^{r \t d_{\t{in}}}, \; 
+B \\in \\m{R}^{r \t d_{\t{in}}} \; 
 r \\ll \\min(d_{\t{out}}, d_{\t{in}}).
 $$
 
 where $$W_{\t{final}}$$ is the original weight matrix which are the weights used in 
-the forward pass of model as usal, $$\Delta W$$ is the update,
+the forward pass of model as usal, $$\\Delta W$$ is the update,
 and **AB** is the low-rank update from LoRA.\n
 This way, the model benefits from both the pretrained knowledge in **W** and the task-specific adaptations learned
-through the LoRA matrices **A** and **B**.
+through the LoRA matrices $$A$$ and $$B$$.
 
 
 ### LoRA Matrices Initialization
