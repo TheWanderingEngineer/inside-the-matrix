@@ -425,20 +425,24 @@ while the pretrained weights remain unchanged. This results in significant savin
 
 ### How Original Weights and LoRA Adaptors Work Together
 During training, the original weight matrix **W** is frozen while the LoRA matrices **A** and **B** are
-updated through backpropagation producing the low-rank $$\Delta W = A B$$. During inference
+updated through backpropagation producing the low-rank $$\\Delta W = A B$$. During inference
 (prediction), the original weights and the LoRA weights are combined together
 to produce the final output:
 
 
 $$
-W_{\text{final}} = W + \Delta W = W_{\text{pretrained}} + A B
-
-
-W_{\text{final}} = W + \Delta W = W_{\text{pretrained}} + A B, \\
-\text{where } W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}, \; A \in \mathbb{R}^{d_{\text{out}} \times r}, \; B \in \mathbb{R}^{r \times d_{\text{in}}}, \; r \ll \min(d_{\text{out}}, d_{\text{in}}).
+W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B
 $$
 
-where $$W_{\text{final}}$$ is the original weight matrix which are the weights used in 
+$$
+W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B, \\
+\t{where } W \in \m{R}^{d_{\t{out}} \t d_{\t{in}}}, \; 
+A \in \m{R}^{d_{\t{out}} \t r}, \; 
+B \in \m{R}^{r \t d_{\text{in}}}, \; 
+r \ll \min(d_{\t{out}}, d_{\t{in}}).
+$$
+
+where $$W_{\t{final}}$$ is the original weight matrix which are the weights used in 
 the forward pass of model as usal, $$\Delta W$$ is the update,
 and **AB** is the low-rank update from LoRA.\n
 This way, the model benefits from both the pretrained knowledge in **W** and the task-specific adaptations learned
