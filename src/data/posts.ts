@@ -408,10 +408,12 @@ representing the entire **X** matrix. We can expect much more reduction when dea
 the weight matrices in large language models, which can have millions (or even billions) of parameters.
 
 ## LoRA in Mechanism
-In LoRA, we apply this concept of matrix decomposition to the weight matrices of certain layers in a 
-pretrained Transformer model. Instead of updating the full weight matrix during fine-tuning, we freeze the
-original, pretrained weights and inject low-rank matrices (A & B) that are trainable, where the rank **r**
-is a hyperparameter that you can choose based on your compute and performance needs. Keep in mind
+
+In LoRA, we add small *low-rank adapters* (hence, the name) to selected layers of a pretrained Transformer, then
+fine-tune only these adapters while keeping the original weights frozen, these adapters are represented as
+two low-rank matrices $$A$$ and $$B$$ that are multiplied together to form a low-rank update 
+to the original weight matrix as shown earlier. \
+The rank **r** is a hyperparameter that you can choose based on your compute and performance needs. Keep in mind
 that lower **r** means more parameter reduction but potentially more information loss, **r** is usually set 
 to a small value like 4 or 8, but can go higher up to 64 and beyond depending on the model size and task.\n
 The image below is taken from the original LoRA paper showing how LoRA adaptors are injected into a pretrained model.
@@ -425,7 +427,7 @@ while the pretrained weights remain unchanged. This results in significant savin
 
 ### How Original Weights and LoRA Adaptors Work Together
 During training, the original weight matrix $$W$$ is frozen while the LoRA matrices $$A$$ and $$B$$ are
-updated through backpropagation producing the low-rank $$\\Delta W = A B$$. During inference
+updated through backpropagation producing the the update, the low-rank $$\\Delta W = A B$$. During inference
 (prediction), the original weights and the LoRA weights are combined together
 to produce the final output:
 
@@ -434,32 +436,37 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-{where}\\ W \\in{R}^{d_{\t{out}}\\times\t d_{\t{in}}} \; A \\in \m{R}^{d_{\t{out}}\\times\t r},
+{where}\\ W \\in{R}^{d_{\t{out}}\\times\t d_{\t{in}}} \; A \\in {R}^{d_{\t{out}}\\times\t r},
 $$
 $$
-B \\in {R}^{r \\times\t d_{\t{in}}} \; 
+B \\in {R}^{r \\times\t d_{\t{in}}},
+$$
+$$
 r \\ll \\min(d_{\t{out}}, d_{\t{in}})
 $$
 
-where $$W_{\t{final}}$$ is the original weight matrix which are the weights used in 
-the forward pass of model as usal, $$\\Delta W$$ is the update,
-and **AB** is the low-rank update from LoRA.\n
-This way, the model benefits from both the pretrained knowledge in **W** and the task-specific adaptations learned
-through the LoRA matrices $$A$$ and $$B$$.
+where $$W_{\t{final}}$$ is the final weight matrix that is used in 
+the forward pass of model as usal and $$AB$$ is the low-rank update from LoRA.\n
+This way, the model benefits from both the pretrained knowledge inside $$W$$ and the task-specific 
+adaptations learned through the LoRA matrices $$A$$ and $$B$$ during fine-tuning.
 
 
 ### LoRA Matrices Initialization
-The LoRA matrices **A** and **B** are usually initialized such that the product **AB** 
+
+The LoRA matrices $$A$$ and $$B$$ are usually initialized such that the product $$AB$$
 is close to zero at the start of training.
-This is often done by initializing **A** with small random values (e.g. samples from a normal distribution with
-zero-mean and some variance) and **B** with zeros, ensuring that the initial output of the LoRA adaptors does 
-not significantly alter the behavior of the pretrained model. \n
-The matrix **A** is choosen to have small values to prevent large initial and sudden updates, 
-while **B** is set to zero to ensure that the **initial contribution** of the LoRA adaptors is negligible. We
+This is often done by initializing $$A$$ with small random values (e.g. samples from a normal distribution with
+zero-mean and some variance) and $$B$$ with zeros, ensuring that the initial output of the LoRA adaptors does 
+not significantly alter the behavior of the pretrained model, as shown in the LoRA diagram found in
+in the original paper, and shown above.\n
+The matrix $$A$$ is choosen to have small values to prevent large initial and sudden updates, 
+while $$B$$ is set to zero to ensure that the **initial contribution** of the LoRA adaptors is negligible. We
 can't have both matrices initialized with zeros because then the gradients would also zero out,
-preventing any learning from happening.\n
+preventing any learning from happening. We can swap the initialization (A=0, B=random) but
+this is less common.
 
 ### What to LoRA
+
 LoRA can be applied to different weight matrices across various layers of the Transformer architecture,
 including:
 - Attention projection matrices (query, key, value, output)
@@ -467,15 +474,36 @@ including:
 - Cross-attention layers (Common in Stable Diffusion fine-tuning)
 - Other linear layers within the model
 
-The choice of which to LoRA depends on the model architecture, resources, and the specific task at hand.
-The original paper applied LoRA to the query and value projection matrices in the attention layers
+The choice of which to LoRA depends on the model architecture, available resources, and the specific task at hand.
+The original paper applied LoRA to the query $$W_Q$$ and value $$W_v$$ projection matrices in the attention layers
 which was shown to be very effective.\n
 
+### LoRA Inside Transformers
+We'll take BERT-Large as an example to see LoRA placement. BERT-Large has 24 layers (Transformer blocks) and 
+345 million parameters, this means when we want to fine-tune BERT-Large, we need to update all 345M parameters,
+and store gradients for all these parameters during training (that's multiple terabytes), 
+which can be very resource-intensive, and this is considered small in today's standards. \n
+The image below shows vanilla BERT architecture (One encoder block). Some Transformers 
+parts are omitted for simplicity.
+<p align="center">
+  <img src="images/bert.png" alt="one-block-bert" width="600"/>
+</p>
+Now let's see where LoRA adaptors are placed inside BERT:
+<p align="center">
+  <img src="images/bert-lora.png" alt="one-block-bert-lora" width="600"/>
+</p>
+These adaptors shown in the image above are the low-rank matrices $$A$$ and $$B$$, which are basically 
+small linear layers added in parallel to the original weight matrices (Across all heads) in the attention
+ and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
+adaptors, which can be as low as 1-2% of the total parameters, depending on the selected rank **r**. This results in
+huge savings in terms of memory and computation during training. **Note that during inference, the LoRA weights are 
+merged with the original weights, so there is no additional latency introduced during prediction, which is 
+a big advantage of LoRA over other PEFT techniques.**
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
   image: "images/lora.png",
-  date: "2025-10-17",
-  readTime: "6 min read"
+  date: "2025-10-24",
+  readTime: "30 min read"
 }
 ];
 
