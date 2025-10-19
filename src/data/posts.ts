@@ -488,15 +488,16 @@ parts are omitted for simplicity.
 <p align="center">
   <img src="images/bert.png" alt="one-block-bert" width="600"/>
 </p>
-Now let's see where LoRA adaptors are placed inside BERT **W** :
+Now let's see where LoRA adaptors are placed inside BERT.
+
 <p align="center">
   <img src="images/bert-lora.png" alt="one-block-bert-lora" width="600"/>
 </p>
 
-**W**
+
 These adaptors shown in the image above are the low-rank matrices $$A$$ and $$B$$, which are basically 
 small linear layers added in parallel to the original weight matrices (Across all heads) in the attention
- and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
+and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
 adaptors, which can be as low as 1-2% of the total parameters, depending on the selected rank **r**. This results in
 huge savings in terms of memory and computation during training. **Note that during inference, the LoRA weights are 
 merged with the original weights, so there is no additional latency introduced during prediction, which is 
