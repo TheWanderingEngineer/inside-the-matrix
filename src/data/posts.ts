@@ -435,10 +435,13 @@ W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B
 $$
 
 $$
-W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B, \\\n
-\t{where }  W \i \m{R}^{d_{\t{out}} \t d_{\t{in}}}, \; 
-A \in \m{R}^{d_{\t{out}} \t r}, \; 
-B \in \m{R}^{r \t d_{\text{in}}}, \; 
+W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
+$$
+$$
+\t{where }  W \i \m{R}^{d_{\t{out}} \t d_{\t{in}}}, \; A \\in \m{R}^{d_{\t{out}} \t r},
+$$
+$$
+B \\in \\m{R}^{r \t d_{\t{in}}}, \; 
 r \\ll \\min(d_{\t{out}}, d_{\t{in}}).
 $$
 
