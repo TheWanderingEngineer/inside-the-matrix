@@ -439,10 +439,10 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-{where}\\ W \\in{R}^{d\\timesd} \; A \\in {R}^{d\\timesr},
+{where}\\ W \\in{R}^{d \\times d} \; A \\in {R}^{d \\times r},
 $$
 $$
-B \\in {R}^{r\\\\timesd},
+B \\in {R}^{r \\times d},
 $$
 $$
 r \\ll d
