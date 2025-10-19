@@ -316,12 +316,23 @@ This matrix has a rank of 2 because there are 2 linearly independent rows (or co
 meaning that we can represent the entire matrix using just 2 rows (or columns), these two are 
 the first and third rows. With these two rows, we can construct the others, like so:
 $$
-X =
+X = A B =
 \begin{bmatrix}
 1 & 2 & 3 \\
 2 & 4 & 6 \\
 1 & 0 & 1 \\
 2 & 0 & 2
+\end{bmatrix}
+\approx
+\begin{bmatrix}
+1 & 0 \\
+2 & 0 \\
+0 & 1 \\
+0 & 2
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 & 3 \\
+1 & 0 & 1
 \end{bmatrix}
 $$
 
