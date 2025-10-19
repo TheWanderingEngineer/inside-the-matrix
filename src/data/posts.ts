@@ -434,10 +434,10 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 $$
-{where}\\ W \\in{R}^{d_{\t{out}}x\t d_{\t{in}}} \; A \\in \m{R}^{d_{\t{out}}x\t r},
+{where}\\ W \\in{R}^{d_{\t{out}}\\times\t d_{\t{in}}} \; A \\in \m{R}^{d_{\t{out}}\\times\t r},
 $$
 $$
-B \\in {R}^{r x\t d_{\t{in}}} \; 
+B \\in {R}^{r \\times\t d_{\t{in}}} \; 
 r \\ll \\min(d_{\t{out}}, d_{\t{in}})
 $$
 
