@@ -298,14 +298,78 @@ print("Wake up, Neo.")
   content: `
 # Inside the Matrix: LoRA Explained
 Low-Rank Adaptation (LoRA) is a training (fine-tuning) technique that is one of the most popular Parameter-Efficient Fine-Tuning (PEFT) methods.
-It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.
+It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by 
+Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.\n
+LoRA reduces the number of trainable parameters of a large model by freezing the orginal (pretrained) weights
+and injecting trainable rank-decompostion matrices into some layers of the Transformer architecture. Wah wah wah,
+too many jargons at once... Let's break it down, starting with the concept of "rank" in linear algebra.
+
 ## What is Rank?
+The rank of a matrix is the smallest number of *linearly independent* rows (or columns) in the matrix.
+linearly independent means that no row (or column) can be represented as a linear combination of the others.
+For example, consider the following matrix:
 <p align="center">
   <img src="images/mat-rank-2.png" alt="LoRA Matrix" width="400"/>
 </p>
-test1
-test2
+\n
+This matrix has a rank of 2 because there are 2 linearly independent rows (or columns),
+meaning that we can represent the entire matrix using just 2 rows (or columns), these two are 
+the first and third rows. With these two rows, we can construct the others, like so:
+$$
+X =
+\begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6 \\
+1 & 0 & 1 \\
+2 & 0 & 2
+\end{bmatrix}
+$$
 
+We can see that:
+
+$$
+\begin{aligned}
+\text{Row}_2 &= 2 \times \text{Row}_1, \\
+\text{Row}_4 &= 2 \times \text{Row}_3.
+\end{aligned}
+$$
+
+Hence, the rank of \( X \) is **2** (only two linearly independent rows).
+But how does this help in reducing parameters in LoRA?
+## Matrix Decomposition
+Matrix decomposition is the process of breaking down a matrix into a product of two or more matrices.
+When we know the rank of a matrix, we can decompose it into two smaller matrices, without losing much information.
+for example, the above matrix \( X \) can be decomposed into two matrices \( A \) and \( B \):
+$$
+X \approx A \times B
+$$
+Where \( A \) is of size \( (4 \times 2) \) and \( B \) is of size \( (2 \times 3) \):
+$$
+X = A B =
+\begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6 \\
+1 & 0 & 1 \\
+2 & 0 & 2
+\end{bmatrix}
+\approx
+\begin{bmatrix}
+1 & 0 \\
+2 & 0 \\
+0 & 1 \\
+0 & 2
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 & 3 \\
+1 & 0 & 1
+\end{bmatrix}
+$$
+Now the main parameter here is the rank (2 in this case), which determines the size of the decomposed matrices.
+By choosing a smaller rank, we can reduce the number of parameters significantly.
+For example, the original matrix \( X \) has \( 4 \times 3 = 12 \) parameters, while the decomposed matrices with rank 1
+have \( (4 \times 1) + (1 \times 3) = 7 \) parameters, which is a reduction of about 41.67%. This technique 
+is the core idea behind LoRA, and its efficiency increases with larger matrices commonly found in deep learning models (like LLMs)
+## LoRA in Action
 test3
 test4\n
 test5
