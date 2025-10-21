@@ -2,11 +2,12 @@ import type { Post } from "@/types/post";
 
 // Eagerly import every .ts file in this folder (except index.ts)
 const modules = import.meta.glob("./*.ts", { eager: true });
+const entries = Object.entries(modules).filter(([p]) => p !== "./index.ts");
 
 type PostWithId = Post & { id: string };
 
 const postsMap: Record<string, Post> = Object.fromEntries(
-  Object.entries(modules).map(([path, mod]) => {
+  entries.map(([path, mod]) => {
     const id = path.replace("./", "").replace(".ts", "");   // filename = id
     // @ts-expect-error default export exists
     return [id, (mod as any).default as Post];
