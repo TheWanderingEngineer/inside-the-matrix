@@ -250,7 +250,7 @@ From this plot, we can see that trainable parameters increase *linearly* with th
 which is expected since the number of parameters in LoRA for square matrices ($$d \\times d$$)  is given by:
 
 $$
-\#Params_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
+\\Theta_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
 $$
 
 Where $$d_{model}$$ is the model dimension (1024 for BERT-Large), 
