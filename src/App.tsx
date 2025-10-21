@@ -28,7 +28,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <BrowserRouter basename="/inside-the-matrix">
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <Header isDark={isDark} toggleTheme={toggleTheme} />
           <Routes>
             <Route path="/" element={<Index />} />

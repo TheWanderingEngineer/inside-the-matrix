@@ -2,18 +2,19 @@ import { useState, useMemo } from "react";
 import SearchBar from "@/components/SearchBar";
 import FilterTags from "@/components/FilterTags";
 import BlogCard from "@/components/BlogCard";
-import { posts } from "@/data/posts";
+import { getAllPosts } from "@/data/posts";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const posts = useMemo(() => getAllPosts(), []);
 
   // Get all unique tags
   const allTags = useMemo(() => {
     const tags = new Set<string>();
     posts.forEach((post) => post.tags.forEach((tag) => tags.add(tag)));
     return Array.from(tags).sort();
-  }, []);
+  }, [posts]);
 
   // Filter posts based on search and tags
   const filteredPosts = useMemo(() => {
@@ -35,7 +36,7 @@ const Index = () => {
 
       return matchesSearch && matchesTags;
     });
-  }, [searchQuery, selectedTags]);
+  }, [searchQuery, selectedTags, posts]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
