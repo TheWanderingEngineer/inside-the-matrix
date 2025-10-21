@@ -136,7 +136,7 @@ The image below is taken from the original LoRA paper showing how LoRA adapters 
 <p align="center">
   <img src="images/lora-diagram.png" alt="LoRA Matrix" width="600"/>
 </p>
-
+**Assumption for this post:** all weight matrices are square $$(d \\times d$$) (i.e., $$(d_{in}=d_{out}=d$$)).
 We can see that during fine-tuning, only these LoRA adapter matrices are updated,
 while the pretrained weights remain unchanged. This results in significant savings in terms of trainable parameters.
 
@@ -229,11 +229,14 @@ when LoRA'ing (😎) the query $$W_Q$$ and value $$W_V$$ projection matrices acr
 </p>
 
 From this plot, we can see that trainable parameters increase *linearly* with the rank $$r$$,
-which is expected since the number of parameters in LoRA is given by:
+which is expected since the number of parameters in LoRA for square matrices ($$d //times d)  is given by:
 
 $$
-\\text{Params}_{\\t{LoRA}} = 2 \\times d_{model} \\times r \\times L
+\\{#Params}_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
 $$
+Where $$d_{model}$$ is the model dimension (1024 for BERT-Large), 
+$$L_{LoRA}$$ is the number of target layers/matrices LoRA'ed (e.g., $$2x24=48$$ for $$W_Q$$ and $$W_V$$
+across all BERT-Large 24 layers), and of course $$r$$ is the desired LoRA rank.\n
 Also, we can see that even with a relatively high rank like $$r$$ = 64,
 we only need to fine-tune less than 2% (~6M) of the total parameters, which is a huge reduction compared to
 full fine-tuning, while performance remains comparable to full fine-tuning in many tasks. \n
