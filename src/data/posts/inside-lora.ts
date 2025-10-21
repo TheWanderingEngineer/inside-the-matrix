@@ -56,7 +56,7 @@ $$
 \\end{aligned}
 $$
 
-Hence, the rank($$X$$) = **2**; (only two inearly independent rows). \n
+Hence, the $$rank(X) = 2$$; only two inearly independent rows. \n
 Another way to think about rank is that it measures the information content of a matrix, 
 how much unique information it contains, i.e., how many rows (or columns) are needed to represent the entire matrix. 
 > 📝 **Note:** Higher-rank matrices indicate more information content (less compressible), while lower-rank matrices indicate redundancy (more compressible), since with a few rows, we can represent the other rows, thus reconstructing the orginal matrix.\n
@@ -219,7 +219,7 @@ which was shown to be very effective, in fact, as effective as full fine-tuning 
 ### LoRA Inside Transformers
 We'll take BERT-Large as an example to see LoRA placement. BERT-Large has 24 layers (Transformer blocks) and 
 345 million parameters, this means when we want to fine-tune BERT-Large, we need to update all 345M parameters
-and store gradients for all these parameters during training (that's ~16-32 GB, we're GPU poor here folks), 
+and store gradients for all these parameters during training (that's ~16-32 GB, we're GPU poor here folks💔), 
 which can be very resource-intensive, and even this is considered small in today's standards. \n
 The image below shows the vanilla BERT architecture (One encoder block). Some Transformer
 parts are omitted for simplicity.
@@ -234,7 +234,7 @@ Now let's see where LoRA adapters are placed inside BERT.
 </p>
 
 These adapters shown in the image above are the low-rank matrices $$A$$ and $$B$$, which are basically 
-small linear layers added in parallel to the original weight matrices (Across all heads) in the attention
+small linear layers added in parallel to the original weight matrices (across all heads) in the attention
 and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
 adapters, which can be as low as 1-2% of the total parameters, depending on the selected rank $$r$$. This results in
 huge savings in terms of memory and computation during training. \n
@@ -255,8 +255,10 @@ $$
 
 Where $$|\\Theta_{LoRA}|$$ is the cardinality (number of parameters) of LoRA set of trainable parameters, $$d_{model}$$ 
 is the model dimension (1024 for BERT-Large), 
-$$L_{LoRA}$$ is the number of target layers(or matrices) LoRA'ed (e.g., $$2x24=48$$ for $$W_Q$$ and $$W_V$$
-across all BERT-Large 24 layers), and of course $$r$$ is the desired LoRA rank.\n
+$$L_{LoRA}$$ is the number of target layers (or matrices) LoRA'ed (e.g., $$2 \\times 24=48$$ for $$W_Q$$ and $$W_V$$
+across all BERT-Large 24 layers), and of course $$r$$ is the desired LoRA rank. The constant factor 2 is 
+because we have two matrices ($$A$$ and $$B$$) per LoRA adapter.\n
+
 Also, we can see that even with a relatively high rank like $$r$$ = 64,
 we only need to fine-tune less than 2% (~6M) of the total parameters, which is a huge reduction compared to
 full fine-tuning, while performance remains comparable to full fine-tuning in many tasks. \n
