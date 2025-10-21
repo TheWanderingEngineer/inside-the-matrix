@@ -152,7 +152,8 @@ The image below is taken from the original LoRA paper showing how LoRA adapters 
 <p align="center">
   <img src="images/lora-diagram.png" alt="LoRA Matrix" width="600"/>
 </p>
-**Assumption for this post:** all weight matrices are square ($$d \\times d$$) (i.e., ($$d_{in}=d_{out}=d$$)).\n
+
+**Assumption for this post: all weight matrices are square ($$d \\times d$$) (i.e., ($$d_{in}=d_{out}=d$$)).**\n
 We can see that during fine-tuning, only these LoRA adapter matrices are updated,
 while the pretrained weights remain unchanged. This results in significant savings in terms of trainable parameters.
 
