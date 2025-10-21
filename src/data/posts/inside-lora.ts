@@ -13,15 +13,23 @@ and injecting trainable rank-decompostion matrices into some layers of the Trans
 
 too many jargons at once... Let's break it down, starting with the concept of "rank" in linear algebra.
 
+## Before You Start
+To fully understand this post, you should already be familiar with:
+- Basic linear algebra (matrices, multiplication and its properties)
+- Fundamentals of neural networks and backpropagation
+- Transformer architecture basics (attention, feed-forward layers)
+If any of these sound unfamiliar, have a quick refresher, it'll make the math and concepts ahead much 
+easier to grasp, otherwise you can try your luck, but don't blame me :D.
+
 ## Table of Contents
 - [What is Rank?](#what-is-rank)
 - [Matrix Decomposition](#matrix-decomposition)
-- [Parameter Reduction](#parameter-reduction)
+  - [Parameter Reduction](#parameter-reduction)
 - [LoRA Mechanism](#lora-mechanism)
-- [How All Weights Work Togather](#how-all-weights-work-togather)
-- [LoRA Matrices Initialization](#lora-matrices-initialization)
-- [What to LoRA?](#what-to-lora)
-- [LoRA Inside Transformers](#lora-inside-transformers)
+  - [How All Weights Work Togather](#how-all-weights-work-togather)
+  - [LoRA Matrices Initialization](#lora-matrices-initialization)
+  - [What to LoRA?](#what-to-lora)
+  - [LoRA Inside Transformers](#lora-inside-transformers)
 
 <a id="what-is-rank"></a>
 ## What is Rank?
