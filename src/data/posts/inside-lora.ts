@@ -56,10 +56,12 @@ $$
 \\end{aligned}
 $$
 
-Hence, the $$rank(X) = 2$$; only two inearly independent rows. \n
+Hence, $$rank(X) = 2$$; only two inearly independent rows. \n
 Another way to think about rank is that it measures the information content of a matrix, 
 how much unique information it contains, i.e., how many rows (or columns) are needed to represent the entire matrix. 
-> 📝 **Note:** Higher-rank matrices indicate more information content (less compressible), while lower-rank matrices indicate redundancy (more compressible), since with a few rows, we can represent the other rows, thus reconstructing the orginal matrix.\n
+> 📝 **Note:** Higher-rank matrices indicate more information content (less compressible), while lower-rank 
+ matrices indicate redundancy (more compressible), since with a few rows, we can approximate the original
+ matrix.\n
 But how does this help in reducing parameters in LoRA?
 
 
@@ -113,7 +115,7 @@ $$
 \\end{bmatrix}
 $$
 
-In this example, we used rank $$r$$ = rank($$X$$) = 2, meaning, the rank of the decomposition is the same as 
+In this example, we used rank $$r = rank($$X$$) = 2$$, meaning, the rank of the decomposition is the same as 
 the rank of the matrix, this makes the original matrix $$X$$ perfectly reconstructable from $$A$$ and $$B$$ without 
 any loss of information. However, we can use lower rank like $$r$$ = 1 even when the rank of the original
 matrix is 2, though you should expect some loss of information, fortunately, the loss is negligibile in some cases 
@@ -127,7 +129,7 @@ Let's see how this helps in reducing parameters.
 By choosing a smaller rank, we can reduce the number of parameters significantly.
 For example, the original matrix $$X$$ has 5x5 = 25 parameters, while the rank-2 factorization uses 
 5x2 + 2x5 = 20 parameters only! That's already **20%** reduction in parameters with relatively high rank
-rank($$X$$) = $$r$$!\n
+$$rank(X) = r$$!\n
 If we use rank-1 factorization, we get even more reduction with a total of 5x1 + 1x5 = 10 parameters
 representing the entire $$X$$ matrix. We can expect much more reduction as the matrix gets larger, like
 the weight matrices in large language models, which can have millions (or even billions) of parameters,
@@ -150,7 +152,7 @@ The image below is taken from the original LoRA paper showing how LoRA adapters 
 <p align="center">
   <img src="images/lora-diagram.png" alt="LoRA Matrix" width="600"/>
 </p>
-**Assumption for this post:** all weight matrices are square $$(d \\times d$$) (i.e., $$(d_{in}=d_{out}=d$$)).
+**Assumption for this post:** all weight matrices are square ($$d \\times d$$) (i.e., ($$d_{in}=d_{out}=d$$)).\n
 We can see that during fine-tuning, only these LoRA adapter matrices are updated,
 while the pretrained weights remain unchanged. This results in significant savings in terms of trainable parameters.
 
