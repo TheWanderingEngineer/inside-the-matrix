@@ -10,8 +10,7 @@ It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Mode
 Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.\n
 LoRA reduces the number of trainable parameters of a large model by freezing the orginal (pretrained) weights
 and injecting trainable rank-decompostion matrices into some layers of the Transformer architecture. Wah wah wah,
-
-too many jargons at once... Let's break it down, starting with the concept of "rank" in linear algebra.
+ too many jargons at once... Let's break it down, starting with the concept of "rank" in linear algebra.
 
 ## Before You Start
 To fully understand this post, you should already be familiar with:
@@ -19,9 +18,9 @@ To fully understand this post, you should already be familiar with:
 - Fundamentals of neural networks and backpropagation
 - Transformer architecture basics (attention, feed-forward layers)\n
 If any of these sound unfamiliar, have a quick refresher, it'll make the math and concepts ahead much 
-easier to grasp, otherwise you can try your luck, but don't blame me :D.
+easier to grasp, otherwise you can try your luck, but don't blame me :D. \n
+**You can always see the Definitions section at the end for quick reference of some terms used in this post.**
 
-<!-- Compact spacing for TOC -->
 ## Table of Contents
 - [What is Rank?](#what-is-rank)
 - [Matrix Decomposition](#matrix-decomposition)
@@ -33,7 +32,7 @@ easier to grasp, otherwise you can try your luck, but don't blame me :D.
   - [LoRA Inside Transformers](#lora-inside-transformers)
 - [Key Takeaways](#key-takeaways)
 - [Test Your Understanding](#test)
-<!-- End TOC -->
+- [Definitions (For Reference)](#definitions)
 
 <a id="what-is-rank"></a>
 ## What is Rank?
@@ -204,8 +203,7 @@ The LoRA matrices $$A$$ and $$B$$ are usually initialized such that the product 
 is close to zero at the start of training.
 This is often done by initializing $$A$$ with small random values (e.g. samples from a normal distribution with
 zero-mean and some variance $\\sigma^2$) and $$B$$ with zeros, ensuring that the **initial output**
-of the LoRA adapters does 
-not significantly change the behavior of the pretrained model, preventing Catastrophic Forgetting,
+of the LoRA adapters doesn't significantly change the behavior of the pretrained model, preventing *Catastrophic Forgetting*,
  as shown in the LoRA diagram found in
 in the original paper, and shown above.\n
 You might ask, why not just initialize both $$A$$ and $$B$$ with zeros? The answer is we 
@@ -276,8 +274,16 @@ because we have two matrices ($$A$$ and $$B$$) per LoRA adapter.\n
 
 Also, we can see that even with a relatively high rank like $$r$$ = 64,
 we only need to fine-tune less than 2% (~6M) of the total parameters, which is a huge reduction compared to
-full fine-tuning, while performance remains comparable to full fine-tuning in many tasks. \n
+full fine-tuning, while performance remains comparable to full fine-tuning in many tasks, too good to be true, 
+right? Then you haven't heard about QLoRA...\n
 
+### QLoRA
+QLoRA (Quantized LoRA) is an extension of LoRA that combines low-rank adaptation with model 
+*quantization* to further reduce memory usage during fine-tuning of large language models.
+In QLoRA, the pretrained model weights are quantized to lower precision (usually 4-bit)
+to save memory, while the LoRA adapters are trained in 16-bit precsion.
+This allows fine-tuning of very large models with a few billion parameters on a single GPU with limited memory
+making it accessible to everyone (except me, with my integrated GPU). \n 
 > 📝 **Note:** During inference, LoRA can be merged into the base weights, 
 (eliminating adapters and keeping size unchanged), which means no delay is introduced during inference.
  However, many setups don't merge, especially with quantized models, but even without merging since the matrices
@@ -290,7 +296,18 @@ full fine-tuning, while performance remains comparable to full fine-tuning in ma
 
  <a id="test"></a>
  ## Test Your Understanding
- 
+
+<a id="definitions"></a>
+ ## Definitions (For Reference)
+  - **Rank**: The number of linearly independent rows or columns in a matrix.
+  - **Matrix Decomposition**: Breaking down a matrix into a product of two or more matrices.
+  - **Low-Rank Adaptation (LoRA)**: Seriously? just scroll up, the whole post is about it :D.
+  - **Parameter-Efficient Fine-Tuning (PEFT)**: Techniques that reduce the number of trainable parameters during model fine-tuning. NOT DURING INFERENCE.
+  - **Catastrophic Forgetting**: When a model forgets previously learned information (usually from pretraining) when learning new information (with fine-tuning).
+  - **Quantization**: Reducing the precision (4-bit, 16-bit, etc..) of the numbers (here, weights), mainly to save memory and computation.
+  - **Pretrained Weights**: The weights of a model that has been previously trained on a HUGE dataset before fine-tuning on a specific task.
+
+  Agh, Bye.
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
   image: "images/lora.png",
