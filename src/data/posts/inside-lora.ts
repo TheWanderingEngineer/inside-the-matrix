@@ -247,7 +247,7 @@ when LoRA'ing (😎) the query $$W_Q$$ and value $$W_V$$ projection matrices acr
 </p>
 
 From this plot, we can see that trainable parameters increase *linearly* with the rank $$r$$,
-which is expected since the number of parameters in LoRA for square matrices ($$d //times d)  is given by:
+which is expected since the number of parameters in LoRA for square matrices ($$d //times d$$)  is given by:
 
 $$
 \\{#Params}_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
