@@ -250,8 +250,9 @@ From this plot, we can see that trainable parameters increase *linearly* with th
 which is expected since the number of parameters in LoRA for square matrices ($$d \\times d$$)  is given by:
 
 $$
-\\{#Params}_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
+#Params_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
 $$
+
 Where $$d_{model}$$ is the model dimension (1024 for BERT-Large), 
 $$L_{LoRA}$$ is the number of target layers(or matrices) LoRA'ed (e.g., $$2x24=48$$ for $$W_Q$$ and $$W_V$$
 across all BERT-Large 24 layers), and of course $$r$$ is the desired LoRA rank.\n
