@@ -4,7 +4,7 @@ const post: Post = {
   title: "How LoRA Shrinks the Training Matrix",
   summary: "Inside the low-rank adaptation that reshaped AI fine-tuning.",
   content: `
-  
+
 Low-Rank Adaptation (LoRA) is a training (fine-tuning) technique that is one of the most popular Parameter-Efficient Fine-Tuning (PEFT) methods.
 It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by 
 Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.\n
@@ -99,7 +99,8 @@ X = A B =
 2 & 3 & 5 & 6 & 7 \\\\
 -1 & 2 & 1 & 4 & 7
 \\end{bmatrix}
-\\\\
+$$
+$$
 =
 \\begin{bmatrix}
 1 & 0 \\\\
