@@ -212,7 +212,7 @@ merged with the original weights, so there is no additional latency introduced d
 a big advantage of LoRA over other PEFT techniques.**
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
-  image: "/inside-the-matrix/public/images/lora.png",
+  image: "images/lora.png",
   date: "2025-10-24",
   readTime: "30 min read"
 
