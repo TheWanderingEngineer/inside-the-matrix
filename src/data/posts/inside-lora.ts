@@ -4,14 +4,26 @@ const post: Post = {
   title: "How LoRA Shrinks the Training Matrix",
   summary: "Inside the low-rank adaptation that reshaped AI fine-tuning.",
   content: `
-# Inside the Matrix: LoRA Explained
+  
 Low-Rank Adaptation (LoRA) is a training (fine-tuning) technique that is one of the most popular Parameter-Efficient Fine-Tuning (PEFT) methods.
 It was introduced in the paper [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) by 
 Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu Chen in 2021.\n
 LoRA reduces the number of trainable parameters of a large model by freezing the orginal (pretrained) weights
 and injecting trainable rank-decompostion matrices into some layers of the Transformer architecture. Wah wah wah,
+
 too many jargons at once... Let's break it down, starting with the concept of "rank" in linear algebra.
 
+## Table of Contents
+- [What is Rank?](#what-is-rank)
+- [Matrix Decomposition](#matrix-decomposition)
+- [Parameter Reduction](#parameter-reduction)
+- [LoRA Mechanism](#lora-mechanism)
+- [How Original Weights and LoRA Adapter Weights Work Together](#how-original-weights-and-lora-adapter-weights-work-together)
+- [LoRA Matrices Initialization](#lora-matrices-initialization)
+- [What to LoRA?](#what-to-lora)
+- [LoRA Inside Transformers](#lora-inside-transformers)
+
+<a id="what-is-rank"></a>
 ## What is Rank?
 The rank of a matrix is the smallest number of *linearly independent* rows (or columns) in the matrix.
 linear independence means that no row (or column) can be represented as a linear combination of the others.
@@ -53,6 +65,7 @@ matrix.**
 But how does this help in reducing parameters in LoRA?
 
 
+<a id="matrix-decomposition"></a>
 ## Matrix Decomposition
 Matrix decomposition is the process of breaking down a matrix into a product of two or more matrices.
 For example, the above matrix $$X$$ can be decomposed into two matrices smaller matrices $$A$$ and $$B$$ such that:
@@ -110,16 +123,18 @@ We can clearly see that $$r$$ is a hyperparameter we select that determines the 
 the number of parameters needed to represent the original matrix. \n
 Let's see how this helps in reducing parameters.
 
+<a id="parameter-reduction"></a>
 ### Parameter Reduction
 By choosing a smaller rank, we can reduce the number of parameters significantly.
 For example, the original matrix $$X$$ has 5x5 = 25 parameters, while the rank-2 factorization uses 
 5x2 + 2x5 = 20 parameters only! That's already **20%** reduction in parameters with relatively high rank
-rank($$X$$) = $$r$$)!\n
+rank($$X$$) = $$r$$!\n
 If we use rank-1 factorization, we get even more reduction with a total of 5x1 + 1x5 = 10 parameters
 representing the entire $$X$$ matrix. We can expect much more reduction as the matrix gets larger, like
 the weight matrices in large language models, which can have millions (or even billions) of parameters,
 this idea of parameter reduction is the core concept behind LoRA.
 
+<a id="lora-mechanism"></a>
 ## LoRA Mechanism
 
 In LoRA, we add small *Low-Rank Adapters* (hence the name) to selected layers of a pretrained Transformer -which
@@ -140,6 +155,7 @@ The image below is taken from the original LoRA paper showing how LoRA adapters 
 We can see that during fine-tuning, only these LoRA adapter matrices are updated,
 while the pretrained weights remain unchanged. This results in significant savings in terms of trainable parameters.
 
+<a id="how-original-weights-and-lora-adapter-weights-work-together"></a>
 ### How Original Weights and LoRA Adapter Weights Work Together
 During training, the original weight matrix $$W$$ is frozen while the LoRA matrices $$A$$ and $$B$$ are
 updated through backpropagation producing the update of the low-rank matrices defined as the  $$\\Delta W = A B$$.
@@ -167,6 +183,7 @@ This way, the model benefits from both the pretrained knowledge inside $$W$$ and
 adaptations learned through the LoRA matrices $$A$$ and $$B$$ during fine-tuning.
 
 
+<a id="lora-matrices-initialization"></a>
 ### LoRA Matrices Initialization
 
 The LoRA matrices $$A$$ and $$B$$ are usually initialized such that the product $$AB$$
@@ -185,6 +202,7 @@ initial changes to the model's behavior, potentially destorting the pretrained w
 worth mentioning that we can swap the initialization (A=0, B=random) but
 this is less common due to slower convergence observed in practice.
 
+<a id="what-to-lora"></a>
 ### What to LoRA?
 
 LoRA can be applied to different weight matrices across various layers of the Transformer architecture,
@@ -196,12 +214,13 @@ including:
 
 The choice of which to LoRA depends on the model architecture, available resources, and the specific task at hand.
 The original paper mainly applied LoRA to the query $$W_Q$$ and value $$W_V$$ projection matrices in the attention layers
-which was shown to be very effective, in fact, as effective as full fine-tuning.\n
+which was shown to be very effective, in fact, as effective as full fine-tuning in some cases.\n
 
+<a id="lora-inside-transformers"></a>
 ### LoRA Inside Transformers
 We'll take BERT-Large as an example to see LoRA placement. BERT-Large has 24 layers (Transformer blocks) and 
 345 million parameters, this means when we want to fine-tune BERT-Large, we need to update all 345M parameters
-and store gradients for all these parameters during training (that's multiple terabytes), 
+and store gradients for all these parameters during training (that's ~16-32 GB, we're GPU poor here folks), 
 which can be very resource-intensive, and even this is considered small in today's standards. \n
 The image below shows the vanilla BERT architecture (One encoder block). Some Transformer
 parts are omitted for simplicity.
@@ -218,7 +237,7 @@ Now let's see where LoRA adapters are placed inside BERT.
 These adapters shown in the image above are the low-rank matrices $$A$$ and $$B$$, which are basically 
 small linear layers added in parallel to the original weight matrices (Across all heads) in the attention
 and feed-forward layers. Now instead of updating all 345M parameters during fine-tuning, we only update the LoRA
-adaptors, which can be as low as 1-2% of the total parameters, depending on the selected rank $$r$$. This results in
+adapters, which can be as low as 1-2% of the total parameters, depending on the selected rank $$r$$. This results in
 huge savings in terms of memory and computation during training. \n
 The plot below shows the relationship between the LoRA rank $$r$$ and the percentage of trainable parameters
 when LoRA'ing (😎) the query $$W_Q$$ and value $$W_V$$ projection matrices across all 
@@ -240,9 +259,11 @@ across all BERT-Large 24 layers), and of course $$r$$ is the desired LoRA rank.\
 Also, we can see that even with a relatively high rank like $$r$$ = 64,
 we only need to fine-tune less than 2% (~6M) of the total parameters, which is a huge reduction compared to
 full fine-tuning, while performance remains comparable to full fine-tuning in many tasks. \n
-**Note that during inference, the LoRA weights are 
-merged with the original weights, so there is no additional latency introduced during prediction, which is 
-a big advantage of LoRA over other PEFT techniques.**
+**Note that during inference, LoRA can be merged into the base weights, 
+(eliminating adapters and keeping size unchanged), with means no delay is introduced during inference.
+ However, many setups don't merge, especially with *quantized* models, but even without merging since the matrices
+ are low-rank, the additional computation is minimal, and practically there is no additional latency 
+ introduced during prediction, which is a big advantage of LoRA over other PEFT techniques.**
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
   image: "images/lora.png",
