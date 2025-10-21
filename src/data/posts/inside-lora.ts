@@ -17,10 +17,11 @@ too many jargons at once... Let's break it down, starting with the concept of "r
 To fully understand this post, you should already be familiar with:
 - Basic linear algebra (matrices, multiplication and its properties)
 - Fundamentals of neural networks and backpropagation
-- Transformer architecture basics (attention, feed-forward layers)
+- Transformer architecture basics (attention, feed-forward layers)\n
 If any of these sound unfamiliar, have a quick refresher, it'll make the math and concepts ahead much 
 easier to grasp, otherwise you can try your luck, but don't blame me :D.
 
+<div style="margin-top:-0.5em; margin-bottom:-0.5em;">
 ## Table of Contents
 - [What is Rank?](#what-is-rank)
 - [Matrix Decomposition](#matrix-decomposition)
@@ -30,6 +31,9 @@ easier to grasp, otherwise you can try your luck, but don't blame me :D.
   - [LoRA Matrices Initialization](#lora-matrices-initialization)
   - [What to LoRA?](#what-to-lora)
   - [LoRA Inside Transformers](#lora-inside-transformers)
+- [Key Takeaways](#key-takeaways)
+- [Test Your Understanding](#test)
+</div>
 
 <a id="what-is-rank"></a>
 ## What is Rank?
@@ -280,9 +284,11 @@ full fine-tuning, while performance remains comparable to full fine-tuning in ma
  are low-rank, the additional computation is minimal, and practically there is no additional latency 
  introduced during prediction, which is a big advantage of LoRA over other PEFT techniques.
 
+
+ <a id="key-takeaways"></a>
  ## Key Takeaways
 
-
+ <a id="test"></a>
  ## Test Your Understanding
  
   `,
