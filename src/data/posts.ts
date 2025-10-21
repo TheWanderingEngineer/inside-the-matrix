@@ -354,10 +354,10 @@ For example, the above matrix $$X$$ can be decomposed into two matrices smaller 
 $$
 X = A B
 $$
-where $$A$$ is a ($$R \\times r$$) 5x2 matrix and $$B$$ is a 2x5 ($$r \\times C$$) matrix representing
+where $$A$$ is a 5x2 ($$R \\times r$$) matrix and $$B$$ is a 2x5 ($$r \\times C$$) matrix representing
 the rank-2 factorization of $$X$$, where R is the number of rows (5), C is the number of columns (5),
 and r is the rank (2). The matrices $$A$$ and **B** are constructed 
-such that when we multiply **A** and $$B$$, we get back the original matrix $$X$$:
+such that when we multiply $$A$$ and $$B$$, we get back the original matrix $$X$$:
 Originally we have:
 
 $$
