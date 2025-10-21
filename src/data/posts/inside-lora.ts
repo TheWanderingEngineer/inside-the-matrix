@@ -86,6 +86,7 @@ X = A B =
 2 & 3 & 5 & 6 & 7 \\\\
 -1 & 2 & 1 & 4 & 7
 \\end{bmatrix}
+\\
 =
 \\begin{bmatrix}
 1 & 0 \\\\
@@ -217,4 +218,4 @@ a big advantage of LoRA over other PEFT techniques.**
   readTime: "30 min read"
 
 };
-export default post;        // <-- no "id" here
+export default post;
