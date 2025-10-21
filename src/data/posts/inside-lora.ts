@@ -18,7 +18,7 @@ too many jargons at once... Let's break it down, starting with the concept of "r
 - [Matrix Decomposition](#matrix-decomposition)
 - [Parameter Reduction](#parameter-reduction)
 - [LoRA Mechanism](#lora-mechanism)
-- [How Original Weights and LoRA Adapter Weights Work Together](#how-original-weights-and-lora-adapter-weights-work-together)
+- [How All Weights Work Togather](#how-all-weights-work-togather)
 - [LoRA Matrices Initialization](#lora-matrices-initialization)
 - [What to LoRA?](#what-to-lora)
 - [LoRA Inside Transformers](#lora-inside-transformers)
@@ -57,11 +57,9 @@ $$
 $$
 
 Hence, the rank($$X$$) = **2**; (only two inearly independent rows). \n
-One important note is that the rank of a matrix gives us an idea of "information content" of a matrix,
-i.e., how many rows (or columns) are needed to represent the entire matrix. **Higher-rank matrices 
-indicate more information content (less compressible), while lower-rank matrices indicate redundancy 
-(more compressible), since with a few rows, we can represent the other rows, thus reconstructing the orginal
-matrix.**
+Another way to think about rank is that it measures the information content of a matrix, 
+how much unique information it contains, i.e., how many rows (or columns) are needed to represent the entire matrix. 
+> 📝 **Note:** Higher-rank matrices indicate more information content (less compressible), while lower-rank matrices indicate redundancy (more compressible), since with a few rows, we can represent the other rows, thus reconstructing the orginal matrix.\n
 But how does this help in reducing parameters in LoRA?
 
 
@@ -116,7 +114,7 @@ $$
 $$
 
 In this example, we used rank $$r$$ = rank($$X$$) = 2, meaning, the rank of the decomposition is the same as 
-the rank of the matrix, this makes the original matrix $$XX$$ perfectly reconstructable from $$A$$ and $$B$$ without 
+the rank of the matrix, this makes the original matrix $$X$$ perfectly reconstructable from $$A$$ and $$B$$ without 
 any loss of information. However, we can use lower rank like $$r$$ = 1 even when the rank of the original
 matrix is 2, though you should expect some loss of information, fortunately, the loss is negligibile in some cases 
 when $$r$$ is not too small and original matrix is inherently low-rank.
@@ -156,8 +154,8 @@ The image below is taken from the original LoRA paper showing how LoRA adapters 
 We can see that during fine-tuning, only these LoRA adapter matrices are updated,
 while the pretrained weights remain unchanged. This results in significant savings in terms of trainable parameters.
 
-<a id="how-original-weights-and-lora-adapter-weights-work-together"></a>
-### How Original Weights and LoRA Adapter Weights Work Together
+<a id="how-all-weights-work-togather"></a>
+### How All Weights Work Togather
 During training, the original weight matrix $$W$$ is frozen while the LoRA matrices $$A$$ and $$B$$ are
 updated through backpropagation producing the update of the low-rank matrices defined as the  $$\\Delta W = A B$$.
 During inference (prediction), the original weights and the LoRA weights are combined together
@@ -255,16 +253,23 @@ $$
 \\{#Params}_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
 $$
 Where $$d_{model}$$ is the model dimension (1024 for BERT-Large), 
-$$L_{LoRA}$$ is the number of target layers/matrices LoRA'ed (e.g., $$2x24=48$$ for $$W_Q$$ and $$W_V$$
+$$L_{LoRA}$$ is the number of target layers(or matrices) LoRA'ed (e.g., $$2x24=48$$ for $$W_Q$$ and $$W_V$$
 across all BERT-Large 24 layers), and of course $$r$$ is the desired LoRA rank.\n
 Also, we can see that even with a relatively high rank like $$r$$ = 64,
 we only need to fine-tune less than 2% (~6M) of the total parameters, which is a huge reduction compared to
 full fine-tuning, while performance remains comparable to full fine-tuning in many tasks. \n
-**Note that during inference, LoRA can be merged into the base weights, 
+
+> 📝 **Note:** During inference, LoRA can be merged into the base weights, 
 (eliminating adapters and keeping size unchanged), with means no delay is introduced during inference.
  However, many setups don't merge, especially with *quantized* models, but even without merging since the matrices
  are low-rank, the additional computation is minimal, and practically there is no additional latency 
- introduced during prediction, which is a big advantage of LoRA over other PEFT techniques.**
+ introduced during prediction, which is a big advantage of LoRA over other PEFT techniques.
+
+ # Key Takeaways
+
+
+ # Test Your Understanding
+ 
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
   image: "images/lora.png",
