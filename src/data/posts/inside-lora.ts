@@ -250,10 +250,11 @@ From this plot, we can see that trainable parameters increase *linearly* with th
 which is expected since the number of parameters in LoRA for square matrices ($$d \\times d$$)  is given by:
 
 $$
-\\Theta_{LoRA} = 2 \\times d_{model} \\times r \\times L_{LoRA}
+|\\Theta_{LoRA}| = 2 \\times d_{model} \\times r \\times L_{LoRA}
 $$
 
-Where $$d_{model}$$ is the model dimension (1024 for BERT-Large), 
+Where $$|\\Theta_{LoRA}|$$ is the cardinality (number of parameters) of LoRA set of trainable parameters, $$d_{model}$$ 
+is the model dimension (1024 for BERT-Large), 
 $$L_{LoRA}$$ is the number of target layers(or matrices) LoRA'ed (e.g., $$2x24=48$$ for $$W_Q$$ and $$W_V$$
 across all BERT-Large 24 layers), and of course $$r$$ is the desired LoRA rank.\n
 Also, we can see that even with a relatively high rank like $$r$$ = 64,
@@ -261,15 +262,15 @@ we only need to fine-tune less than 2% (~6M) of the total parameters, which is a
 full fine-tuning, while performance remains comparable to full fine-tuning in many tasks. \n
 
 > 📝 **Note:** During inference, LoRA can be merged into the base weights, 
-(eliminating adapters and keeping size unchanged), with means no delay is introduced during inference.
- However, many setups don't merge, especially with *quantized* models, but even without merging since the matrices
+(eliminating adapters and keeping size unchanged), which means no delay is introduced during inference.
+ However, many setups don't merge, especially with quantized models, but even without merging since the matrices
  are low-rank, the additional computation is minimal, and practically there is no additional latency 
  introduced during prediction, which is a big advantage of LoRA over other PEFT techniques.
 
- # Key Takeaways
+ ## Key Takeaways
 
 
- # Test Your Understanding
+ ## Test Your Understanding
  
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
