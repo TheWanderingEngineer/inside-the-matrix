@@ -188,16 +188,18 @@ details[open] {
   box-shadow: 0 0 0 1px var(--mtx-neon-soft) inset, 0 0 16px var(--mtx-neon-soft);
 }
 
-/* body + smooth reveal */
+/* body + smooth open/close (no HTML changes needed) */
 details > *:not(summary) {
   padding: 12px 16px;
   border-top: 1px solid #262626;
-  animation: mtx-fade-in .18s ease both;
+  max-height: 0;                 /* collapsed */
+  opacity: 0;                    /* faded out */
+  overflow: hidden;              /* hide content while collapsed */
+  transition: max-height .28s ease, opacity .2s ease; /* smooth */
 }
-
-@keyframes mtx-fade-in {
-  from { opacity: 0; transform: translateY(-2px); }
-  to   { opacity: 1; transform: translateY(0); }
+details[open] > *:not(summary) {
+  max-height: 1000px;            /* expanded (cap high enough for your content) */
+  opacity: 1;
 }
 
 /* links inside */
