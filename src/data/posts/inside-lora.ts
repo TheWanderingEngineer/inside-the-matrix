@@ -180,7 +180,7 @@ $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
 
-or more precisely:
+or more commonly with a scaling factor  $$\\alpha$$:
 $$
 W_{\\text{final}} = W + \\left(\\frac{\\alpha}{r}\\right) AB,
 $$
@@ -198,15 +198,15 @@ $$
 
 Where $$W_{\t{final}}$$ is the final weight matrix that is used in 
 the forward pass of model as usual, $$d$$ (aka $$d_{model}$$) is the model dimension or hidden size 
-(in BERT-Large $$d$$=1024), and $$AB$$ is the low-rank update from LoRA. A scaling factor \\alpha is a LoRA
+(in BERT-Large $$d$$=1024), and $$AB$$ is the low-rank update from LoRA. A scaling factor $\\alpha$ is a LoRA
 gain that's used to control adaptation strength compared to the original weights, sometimes it's set to
 same as the rank $$r$$, other times it's set to $$2r$$ (twice the rank), so if $$r$$=8, then $$\\alpha$$=16.
 This scaling factor also helps in stabilizing training when adjusting the learning rate or rank.
-The scaling factor \\alpha can also be thought of as implicit regularization with lower values leading to 
+The scaling factor $\\alpha$ can also be thought of as implicit regularization with lower values leading to 
 less overfitting, while higher values allowing more flexibility to adapt to the new task.\n
 
 This way, the model benefits from both the pretrained knowledge inside $$W$$ and the task-specific 
-adaptations learned through the LoRA matrices $$A$$ and $$B$$ during fine-tuning.
+adaptations learned through the low-rank update $\\Delta W = \\left\\frac{\\alpha}{r}\\right AB$ during fine-tuning.
 
 
 <a id="lora-matrices-initialization"></a>
