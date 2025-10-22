@@ -206,7 +206,7 @@ The scaling factor $\\alpha$ can also be thought of as implicit regularization w
 less overfitting, while higher values allowing more flexibility to adapt to the new task.\n
 
 This way, the model benefits from both the pretrained knowledge inside $$W$$ and the task-specific 
-adaptations learned through the low-rank update $\\Delta W = \\left\\frac{\\alpha}{r}\\right AB$ during fine-tuning.
+adaptations learned through the low-rank update $$\\Delta W = frac{\\alpha}{r} AB$$ during fine-tuning.
 
 
 <a id="lora-matrices-initialization"></a>
