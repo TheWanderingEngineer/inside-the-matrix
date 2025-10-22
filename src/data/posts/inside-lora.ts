@@ -325,9 +325,7 @@ making it accessible to everyone (except me, with my integrated GPU). \n
   Agh, Bye.
 <details>
   <summary>Q1: Why α/r?<span class="hint">click to reveal answer</span></summary>
-    <div class="collapsible-body">
     It keeps update strength ~independent of rank r.
-    </div>
 </details>
 
 <details>

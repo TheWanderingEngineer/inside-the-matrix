@@ -224,8 +224,8 @@ summary .hint {
   margin-left: auto;                 /* push to far right */
   font-weight: 400;
   font-size: 0.9em;
-  color: var(--mtx-neon-soft, #00ff8840);
+  color: var(--mtx-neon-soft, #00ff8870);
   transition: color .2s ease, opacity .2s ease;
-  opacity: .85;
+  opacity: .95;
 }
 summary:hover .hint { color: var(--mtx-neon, #00ff88); opacity: 1; }
