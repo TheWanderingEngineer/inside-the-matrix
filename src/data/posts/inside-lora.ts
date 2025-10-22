@@ -332,17 +332,11 @@ making it accessible to everyone (except me, with my integrated GPU). \n
 </details>
 
 <details>
-  <summary>Q4: Write the LoRA-combined weight formula with scaling.<span class="hint">click to reveal answer</span></summary>
-    W<sub>final</sub> = W + (α/r)·A·B.
-</details>
-
-<details>
+  <summary>Q4: Write the LoRA-combined weight formula with scaling.<span class="hint">click to reveal</span></summary>
   <div>
-  <summary>Q4 (div outside question): Write the LoRA-combined weight formula with scaling.<span class="hint">click to reveal answer</span></summary>
     W<sub>final</sub> = W + (α/r)·A·B.
   </div>
 </details>
-
 
 <details>
   <summary>Q5: Why use α/r instead of just AB in LoRA?<span class="hint">click to reveal answer</span></summary>
@@ -351,12 +345,12 @@ making it accessible to everyone (except me, with my integrated GPU). \n
   </div>
 </details>
 
-<div>
 <details>
-  <summary>Q6: How do trainable parameters scale with LoRA rank r (for square d×d and L<sub>LoRA</sub> targets)?<span class="hint">click to reveal answer</span></summary>
+  <summary>Q6: How do trainable parameters scale with LoRA rank r (for square d×d and L<sub>LoRA</sub> targets)?<span class="hint">click to reveal</span></summary>
+  <div>
     Linearly: |Θ<sub>LoRA</sub>| = 2 · d<sub>model</sub> · r · L<sub>LoRA</sub>.
+  </div>
 </details>
-</div>
 
 <details>
   <summary>Q7: In the paper’s setup, which attention projections were LoRA’d and why?<span class="hint">click to reveal answer</span></summary>
