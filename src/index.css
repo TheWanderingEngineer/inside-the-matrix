@@ -172,6 +172,9 @@ summary {
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 /* caret placed before text so the hint can be far-right */
@@ -221,11 +224,16 @@ details a:hover { text-decoration: underline; }
 
 /* hint text */
 summary .hint {
-  margin-left: auto;                 /* push to far right */
+  flex-shrink: 0;
+  margin-left: auto;
+  white-space: nowrap;
   font-weight: 400;
   font-size: 0.9em;
   color: var(--mtx-neon-soft, #00ff8870);
   transition: color .2s ease, opacity .2s ease;
   opacity: .95;
 }
-summary:hover .hint { color: var(--mtx-neon, #00ff88); opacity: 1; }
+summary:hover .hint {
+  color: var(--mtx-neon, #00ff88);
+  opacity: 1;
+}
