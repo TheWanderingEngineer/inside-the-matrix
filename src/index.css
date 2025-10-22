@@ -202,6 +202,18 @@ details[open] > *:not(summary) {
   opacity: 1;
 }
 
+/* Preferred: smooth height animation with a wrapper */
+.collapsible-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height .35s ease, opacity .25s ease;
+}
+details[open] .collapsible-body {
+  max-height: 2000px;  /* raise if you have longer content */
+  opacity: 1;
+}
+
 /* links inside */
 details a { color: var(--mtx-neon); text-decoration: none; }
 details a:hover { text-decoration: underline; }
