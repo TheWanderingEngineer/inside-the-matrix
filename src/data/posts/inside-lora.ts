@@ -182,7 +182,7 @@ $$
 
 or more commonly with a scaling factor  $$\\alpha$$:
 $$
-W_{\\text{final}} = W + \\left(\\frac{\\alpha}{r}\\right) AB,
+W_{\\text{final}} = W + \\frac{\\alpha}{r} AB,
 $$
 
 $$
@@ -323,8 +323,17 @@ making it accessible to everyone (except me, with my integrated GPU). \n
 <a id="references"></a>
 ## Refereces & Learn More
   Agh, Bye.
+<details>
+  <summary>Q1: Why α/r?</summary>
+  It keeps update strength ~independent of rank r.
+</details>
+
+<details>
+  <summary>Q2: Does α control “knowledge”?</summary>
+  No—α scales update magnitude, not knowledge.
+</details>
   `,
-  tags: ["Compression", "Fine-Tuning", "LoRA"],
+  tags: ["Compression", "Fine-Tuning", "LoRA", "QLoRA"],
   image: "images/lora.png",
   date: "2025-10-24",
   readTime: "30 min read"
