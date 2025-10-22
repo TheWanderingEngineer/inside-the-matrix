@@ -33,6 +33,7 @@ easier to grasp, otherwise you can try your luck, but don't blame me :D. \n
 - [Key Takeaways](#key-takeaways)
 - [Test Your Understanding](#test)
 - [Definitions (For Reference)](#definitions)
+- [Refereces & Learn More](#references)
 
 <a id="what-is-rank"></a>
 ## What is Rank?
@@ -178,6 +179,12 @@ to produce the final output:
 $$
 W_{\t{final}} = W + \\Delta W = W_{\t{pretrained}} + A B,
 $$
+
+or more precisely:
+$$
+W_{\\text{final}} = W + \\left(\\frac{\\alpha}{r}\\right) AB,
+$$
+
 $$
 {where}\\ W \\in{R}^{d \\times d}, \\\\ 
 A \\in {R}^{d \\times r},
@@ -191,7 +198,13 @@ $$
 
 Where $$W_{\t{final}}$$ is the final weight matrix that is used in 
 the forward pass of model as usual, $$d$$ (aka $$d_{model}$$) is the model dimension or hidden size 
-(in BERT-Large d=1024), and $$AB$$ is the low-rank update from LoRA.\n
+(in BERT-Large $$d$$=1024), and $$AB$$ is the low-rank update from LoRA. A scaling factor \\alpha is a LoRA
+gain that's used to control adaptation strength compared to the original weights, sometimes it's set to
+same as the rank $$r$$, other times it's set to $$2r$$ (twice the rank), so if $$r$$=8, then $$\\alpha$$=16.
+This scaling factor also helps in stabilizing training when adjusting the learning rate or rank.
+The scaling factor \\alpha can also be thought of as implicit regularization with lower values leading to 
+less overfitting, while higher values allowing more flexibility to adapt to the new task.\n
+
 This way, the model benefits from both the pretrained knowledge inside $$W$$ and the task-specific 
 adaptations learned through the LoRA matrices $$A$$ and $$B$$ during fine-tuning.
 
@@ -226,13 +239,13 @@ including:
 
 The choice of which to LoRA depends on the model architecture, available resources, and the specific task at hand.
 The original paper mainly applied LoRA to the query $$W_Q$$ and value $$W_V$$ projection matrices in the attention layers
-which was shown to be very effective, in fact, as effective as full fine-tuning in some cases.\n
+which was shown to be very effective, in fact, as effective as full fine-tuning in some cases!\n
 
 <a id="lora-inside-transformers"></a>
 ### LoRA Inside Transformers
 We'll take BERT-Large as an example to see LoRA placement. BERT-Large has 24 layers (Transformer blocks) and 
 345 million parameters, this means when we want to fine-tune BERT-Large, we need to update all 345M parameters
-and store gradients for all these parameters during training (that's ~16-32 GB, we're GPU poor here folks💔), 
+and store gradients for all these parameters during training (I think that's ~16-32 GB? But we're GPU poor here folks💔), 
 which can be very resource-intensive, and even this is considered small in today's standards. \n
 The image below shows the vanilla BERT architecture (One encoder block). Some Transformer
 parts are omitted for simplicity.
@@ -274,8 +287,8 @@ because we have two matrices ($$A$$ and $$B$$) per LoRA adapter.\n
 
 Also, we can see that even with a relatively high rank like $$r$$ = 64,
 we only need to fine-tune less than 2% (~6M) of the total parameters, which is a huge reduction compared to
-full fine-tuning, while performance remains comparable to full fine-tuning in many tasks, too good to be true, 
-right? Then you haven't heard about QLoRA...\n
+full fine-tuning, while performance remains comparable to full fine-tuning in many tasks, too good to be true?
+ Then you haven't heard about QLoRA...\n
 
 ### QLoRA
 QLoRA (Quantized LoRA) is an extension of LoRA that combines low-rank adaptation with model 
@@ -307,6 +320,8 @@ making it accessible to everyone (except me, with my integrated GPU). \n
   - **Quantization**: Reducing the precision (4-bit, 16-bit, etc..) of the numbers (here, weights), mainly to save memory and computation.
   - **Pretrained Weights**: The weights of a model that has been previously trained on a HUGE dataset before fine-tuning on a specific task.
 
+<a id="references"></a>
+## Refereces & Learn More
   Agh, Bye.
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA"],
