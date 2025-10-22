@@ -310,6 +310,76 @@ making it accessible to everyone (except me, with my integrated GPU). \n
  <a id="test"></a>
  ## Test Your Understanding
 
+<details>
+  <summary>Q1: What is the rank of a matrix in one line?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    The number of linearly independent rows or columns (the matrix’s intrinsic dimensionality).
+  </div>
+</details>
+
+<details>
+  <summary>Q2: If X ∈ ℝ^{5×5} has rank 2 and X = AB, what are the shapes of A and B?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    A ∈ ℝ^{5×2} and B ∈ ℝ^{2×5}.
+  </div>
+</details>
+
+<details>
+  <summary>Q3: How many parameters are used by a rank‑2 factorization of a 5×5 matrix, and what’s the reduction vs. 25?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    5×2 + 2×5 = 20 parameters; a 20% reduction from 25.
+  </div>
+</details>
+
+<details>
+  <summary>Q4: Write the LoRA-combined weight formula with scaling.<span class="hint">click to reveal answer</span></summary>
+  <div>
+    W<sub>final</sub> = W + (α/r)·A·B.
+  </div>
+</details>
+
+<details>
+  <summary>Q5: Why use α/r instead of just AB in LoRA?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    To keep the update strength roughly independent of rank r and make α the clear knob for adaptation strength.
+  </div>
+</details>
+
+<details>
+  <summary>Q6: How do trainable parameters scale with LoRA rank r (for square d×d and L<sub>LoRA</sub> targets)?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    Linearly: |Θ<sub>LoRA</sub>| = 2 · d<sub>model</sub> · r · L<sub>LoRA</sub>.
+  </div>
+</details>
+
+<details>
+  <summary>Q7: In the paper’s setup, which attention projections were LoRA’d and why?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    W<sub>Q</sub> and W<sub>V</sub>; adapting them was highly effective while keeping most weights frozen.
+  </div>
+</details>
+
+<details>
+  <summary>Q8: What common initialization keeps the initial LoRA output near zero and why?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    A = small random; B = zeros — avoids zero gradients and prevents large initial deviations.
+  </div>
+</details>
+
+<details>
+  <summary>Q9: What happens at inference if we merge LoRA into W, and what if we don’t?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    If merged: no extra latency/size. If not merged: overhead is minimal due to low rank.
+  </div>
+</details>
+
+<details>
+  <summary>Q10: Summarize QLoRA in one line.<span class="hint">click to reveal answer</span></summary>
+  <div>
+    Quantize base weights (e.g., 4‑bit) and train LoRA adapters in higher precision to fit very large models in memory.
+  </div>
+</details>
+
 <a id="definitions"></a>
  ## Definitions (For Reference)
   - **Rank**: The number of linearly independent rows or columns in a matrix.
@@ -322,18 +392,11 @@ making it accessible to everyone (except me, with my integrated GPU). \n
 
 <a id="references"></a>
 ## Refereces & Learn More
-  Agh, Bye.
-<details>
-  <summary>Q1: Why α/r?<span class="hint">click to reveal answer</span></summary>
-    <div>
-    It keeps update strength ~independent of rank r.
-    </div>
-</details>
 
-<details>
-  <summary>Q2: Does α control “knowledge”?<span class="hint">Click to reveal answer</span></summary>
-  No—α scales update magnitude, not knowledge.
-</details>
+
+
+  Agh, Bye.
+
   `,
   tags: ["Compression", "Fine-Tuning", "LoRA", "QLoRA"],
   image: "images/lora.png",
