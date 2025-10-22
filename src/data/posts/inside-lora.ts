@@ -324,12 +324,12 @@ making it accessible to everyone (except me, with my integrated GPU). \n
 ## Refereces & Learn More
   Agh, Bye.
 <details>
-  <summary>Q1: Why α/r?</summary>
+  <summary>Q1: Why α/r?<span class="hint">(click to reveal)</span></summary>
   It keeps update strength ~independent of rank r.
 </details>
 
 <details>
-  <summary>Q2: Does α control “knowledge”?</summary>
+  <summary>Q2: Does α control “knowledge”?<span class="hint">(click to reveal)</span></summary>
   No—α scales update magnitude, not knowledge.
 </details>
   `,

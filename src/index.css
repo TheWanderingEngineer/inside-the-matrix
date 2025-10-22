@@ -201,3 +201,14 @@ details > *:not(summary) {
 /* links inside */
 details a { color: var(--mtx-neon); text-decoration: none; }
 details a:hover { text-decoration: underline; }
+
+
+/* hint text */
+summary .hint {
+  font-weight: 400;
+  font-size: 0.9em;
+  color: #00ff8866;
+  margin-left: 6px;
+  transition: color .2s ease;
+}
+summary:hover .hint { color: #00ff88; }
