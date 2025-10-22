@@ -169,16 +169,18 @@ summary {
   padding: 14px 16px;
   user-select: none;
   letter-spacing: .2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-summary::-webkit-details-marker { display: none; }
 
-/* caret */
-summary::after {
+/* caret placed before text so the hint can be far-right */
+summary::before {
   content: "▸";
-  float: right;
+  margin-right: 8px;
   transition: transform .2s ease;
 }
-details[open] summary::after { transform: rotate(90deg); }
+details[open] summary::before { transform: rotate(90deg); }
 
 /* open state glow */
 details[open] {
@@ -205,10 +207,11 @@ details a:hover { text-decoration: underline; }
 
 /* hint text */
 summary .hint {
+  margin-left: auto;                 /* push to far right */
   font-weight: 400;
   font-size: 0.9em;
-  color: #00ff8866;
-  margin-left: 6px;
-  transition: color .2s ease;
+  color: var(--mtx-neon-soft, #00ff8840);
+  transition: color .2s ease, opacity .2s ease;
+  opacity: .85;
 }
-summary:hover .hint { color: #00ff88; }
+summary:hover .hint { color: var(--mtx-neon, #00ff88); opacity: 1; }
