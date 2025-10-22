@@ -228,12 +228,12 @@ summary .hint {
   margin-left: auto;
   white-space: nowrap;
   font-weight: 400;
-  font-size: 0.65em;
+  font-size: 0.75em;
   color: var(--mtx-neon-soft, #00ff8850);
   transition: color .2s ease, opacity .2s ease;
-  opacity: 0.7;
+  opacity: 0.85;
 }
 summary:hover .hint {
   color: var(--mtx-neon, #00ff88);
-  opacity: 0.9;
+  opacity: 1;
 }
