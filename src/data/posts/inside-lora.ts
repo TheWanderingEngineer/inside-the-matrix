@@ -313,12 +313,12 @@ making it accessible to everyone (except me, with my integrated GPU). \n
 <details>
   <summary>Q1: What is LoRA in one line?<span class="hint">click to reveal answer</span></summary>
   <div>
-    Low‑rank adapters added to selected layers; train only them while freezing the base model.
+    Low-rank adapters added to selected layers; train only them while freezing the base model.
   </div>
 </details>
 
 <details>
-  <summary>Q2: Why prefer LoRA over full fine‑tuning?<span class="hint">click to reveal answer</span></summary>
+  <summary>Q2: Why prefer LoRA over full fine-tuning?<span class="hint">click to reveal answer</span></summary>
   <div>
     Far fewer trainable parameters and lower memory/compute, with similar quality on many tasks.
   </div>
@@ -327,56 +327,30 @@ making it accessible to everyone (except me, with my integrated GPU). \n
 <details>
   <summary>Q3: What does the rank r control?<span class="hint">click to reveal answer</span></summary>
   <div>
-    Adapter capacity and size: higher r ⇒ more expressiveness but more parameters.
+    Adapter capacity and size: higher $$r$$ means more expressiveness but more parameters.
+  </div>
+</details>
+
+
+
+<details>
+  <summary>Q4: Why use the α/r factor?<span class="hint">click to reveal answer</span></summary>
+  <div>
+    Keeps update strength (roughly) rank-independent and makes α the main tuning parameter to control adaptation.
   </div>
 </details>
 
 <details>
-  <summary>Q4: Where is LoRA most commonly applied?<span class="hint">click to reveal answer</span></summary>
+  <summary>Q5: Typical initialization for A and B, and why?<span class="hint">click to reveal answer</span></summary>
   <div>
-    Attention projections, especially W<sub>Q</sub> and W<sub>V</sub> (sometimes FFN/out proj too).
+    A = small random, B = zeros -> AB ≈ 0 at start; avoids zero grads and big initial shifts.
   </div>
 </details>
 
 <details>
-  <summary>Q5: Write the combined weight with scaling.<span class="hint">click to reveal answer</span></summary>
+  <summary>Q6: QLoRA in one line?<span class="hint">click to reveal answer</span></summary>
   <div>
-    W<sub>final</sub> = W + (α/r)·A·B.
-  </div>
-</details>
-
-<details>
-  <summary>Q6: Why use the α/r factor?<span class="hint">click to reveal answer</span></summary>
-  <div>
-    Keeps update strength roughly rank‑independent and makes α the main knob.
-  </div>
-</details>
-
-<details>
-  <summary>Q7: Typical initialization for A and B?<span class="hint">click to reveal answer</span></summary>
-  <div>
-    A = small random, B = zeros → AB ≈ 0 at start; avoids zero grads and big initial shifts.
-  </div>
-</details>
-
-<details>
-  <summary>Q8: What happens if we merge adapters at inference?<span class="hint">click to reveal answer</span></summary>
-  <div>
-    Adapters fold into W; model size and latency match the base model.
-  </div>
-</details>
-
-<details>
-  <summary>Q9: QLoRA in one line?<span class="hint">click to reveal answer</span></summary>
-  <div>
-    Quantize base weights (e.g., 4‑bit) and train LoRA adapters in higher precision to fit big models.
-  </div>
-</details>
-
-<details>
-  <summary>Q10: When should you increase r or LoRA more layers?<span class="hint">click to reveal answer</span></summary>
-  <div>
-    For harder tasks or larger domain shift when quality lags and you have extra compute.
+    Quantize base weights (usually 4-bit) and train LoRA adapters in higher precision to fit big models.
   </div>
 </details>
 
